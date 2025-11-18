@@ -61,3 +61,7 @@ web-build/
 # Logs
 logs
 *.log
+
+# Expo
+.expo/
+.expo-shared/
