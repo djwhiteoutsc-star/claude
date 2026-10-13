@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="ExcuseCard" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/cards/excuse_card.gd" id="1_card"]
+
+[resource]
+script = ExtResource("1_card")
+card_name = "Hall Pass (Real)"
+cost = 3
+reduction = 30
+tag = "helpful"
+combo_from = ""
+flavour = "An actual hall pass. Rare as gold."
+exhaust = true

@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="ExcuseCard" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/cards/excuse_card.gd" id="1_card"]
+
+[resource]
+script = ExtResource("1_card")
+card_name = "Carrying Boxes"
+cost = 1
+reduction = 8
+tag = "helpful"
+combo_from = ""
+flavour = "You found some boxes."

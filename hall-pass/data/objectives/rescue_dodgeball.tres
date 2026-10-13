@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="Objective" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/objectives/objective.gd" id="1_obj"]
+
+[resource]
+script = ExtResource("1_obj")
+id = "rescue_dodgeball"
+title = "Rescue your dodgeball from the gym"
+room_type = "gym"
+snack_reward = 10
