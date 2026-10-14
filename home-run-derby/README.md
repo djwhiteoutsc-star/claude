@@ -5,17 +5,18 @@ A batting-only baseball prototype: step 1 toward a fuller baseball game. It's on
 **Play:** open `index.html` in a browser, or use the published claude.ai link.
 
 ## How it plays
-- **Ten outs per round.** Any swing that isn't a home run is an out, and so is a strike you don't swing at. Balls outside the box are free to take.
-- **Tap the ball** as it reaches the plate.
-  - **When you tap** decides timing: Perfect, Good, or early/late. Early pulls the ball left; late pushes it right. Too far either way is a foul.
-  - **Where you tap** decides launch angle: under the ball lifts it, over it hits a grounder.
-- Consecutive home runs multiply your score, up to ×3.
-- Pitches get faster and add changeups and curves as your home runs add up.
+- **60-second derby at a sandlot.** A pitching machine feeds you balls; hit as many home runs as you can before time runs out.
+- **Swing** by tapping anywhere, pressing the SWING button, or pressing Space. The **TIME YOUR SWING** meter shows the timing: swing when the red arrow is in the light green.
+  - **Perfect** timing is always a home run.
+  - **Good** timing usually carries.
+  - Early pulls the ball left and late slices it right. Too far either way is foul.
+- Three or more home runs in a row get a callout.
 - Career home runs unlock bats: Aluminum (10), Slugger (30), Golden (75).
-- Best score and career totals are saved in the browser (`localStorage`).
+- Records are saved in the browser (`localStorage`): most home runs, longest hit, career total.
+- **Pause** with the pause button, Esc or P. The game also pauses when the tab is hidden.
 
 ## Tuning
 All the numbers are near the top of the script:
-- `OUTS_PER_ROUND`, `BATS`, `PITCHES`
-- The `slow` factor in `makePitch()`, which stretches pitch speed for thumbs
-- The timing windows and the distance formula in `swingAt()`
+- `ROUND_SECONDS`, `METER_MS`, `BATS`
+- Pitch speed in `queuePitch()`
+- Timing windows and the distance formula in `swing()`
