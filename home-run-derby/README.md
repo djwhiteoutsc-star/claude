@@ -1,8 +1,8 @@
 # Home Run Derby
 
-A batting-only baseball prototype: step 1 toward a fuller baseball game. It's one self-contained HTML file with no assets and no build step. It runs in any modern browser on a phone or computer.
+A batting-only baseball prototype: step 1 toward a fuller baseball game. It's one HTML file plus four art images in `assets/`, with no build step. It runs in any modern browser on a phone or computer.
 
-**Play:** open `index.html` in a browser, or use the published claude.ai link.
+**Play:** use the published claude.ai link, or serve this folder locally (for example `python3 -m http.server`) and open `index.html`. Opening the file directly also works in most browsers.
 
 ## How it plays
 - **60-second derby at a sandlot.** A pitching machine feeds you balls; hit as many home runs as you can before time runs out.
@@ -15,8 +15,47 @@ A batting-only baseball prototype: step 1 toward a fuller baseball game. It's on
 - Records are saved in the browser (`localStorage`): most home runs, longest hit, career total.
 - **Pause** with the pause button, Esc or P. The game also pauses when the tab is hidden.
 
-## Tuning
-All the numbers are near the top of the script:
-- `ROUND_SECONDS`, `METER_MS`, `BATS`
+## Art and the batter rig
+| File | What it is |
+|---|---|
+| `assets/sandlot.webp` | Background |
+| `assets/batter-body.webp` | Batter without arms |
+| `assets/batter-arms.webp` | Both arms, gloved fists together |
+| `assets/bat.webp` | Bat, barrel up |
+
+The batter is built from three layers, bottom to top:
+1. **Body**
+2. **Bat**: its grip sits behind the fists
+3. **Arms**: they pivot at the front shoulder and stretch to reach the hands each frame
+
+The bat is posed in 3D (elevation and direction) and drawn foreshortened, so it sweeps around the body. When it points backward it's drawn behind the body.
+
+The motion runs in this order:
+- **Anticipation**: weight shifts back and the hands load as the ball comes in.
+- **Swing**: 70 ms from tap to contact.
+- **Follow-through**, then a short hold.
+- **Recovery** back to the stance.
+- Throughout: a subtle lean, tilt and breathing bob.
+
+Everything you'd want to adjust is in one place near the top of the script:
+- **`ASSETS`**: each image's anchor and pivot points in its own pixels, plus the scales:
+  - where the batter stands on the background
+  - body height, the shoulder socket and arms pivot
+  - fist grip, bat grip, tip and sweet spot
+  - fence line and machine spot
+- **`POSES`**: keyframes for stance, load, contact and finish.
+  - `hx, hy` is the hands position in body pixels from the feet.
+  - `e, a` is the bat's elevation and direction.
+  - `lean`, `tilt` and `squash` control body movement.
+- **`MOTION`**: timing for the load, follow-through, hold and recovery.
+
+**Alignment overlay:** add `#rig` to the end of the link, or press **G** while playing. It marks every anchor and pivot on screen, plus where the pitched ball arrives. The arrival point is computed from the contact pose, so the ball always meets the barrel.
+
+## Tuning gameplay
+These numbers are near the top of the script:
+- `ROUND_SECONDS`
+- `CONTACT_MS`
+- `WINDOWS` (perfect, good and okay timing in ms)
+- `BATS`
 - Pitch speed in `queuePitch()`
-- Timing windows and the distance formula in `swing()`
+- The distance formula in `swing()`

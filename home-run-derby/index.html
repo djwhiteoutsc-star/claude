@@ -6,14 +6,14 @@
   /* Layout: full-screen illustrated sandlot canvas; cream "sticker" HUD badges pinned to the four corners,
      timing meter bottom-centre. Deliberately single-theme (sunny afternoon), so every color is explicit. */
   :root {
-    --cream: #fbf3dc;
-    --cream-2: #f1e4c2;
-    --ink: #22322a;
-    --green: #1f5e45;
-    --green-soft: #8fd3a5;
-    --red: #e2574c;
-    --red-dark: #b33b33;
-    --sky: #8fd0ef;
+    --cream: #fcefd6;
+    --cream-2: #f0e2c4;
+    --ink: #0b2a1d;
+    --green: #16583f;
+    --green-soft: #a6dd6e;
+    --red: #e54230;
+    --red-dark: #b5301f;
+    --sky: #3dbbfc;
     --font-display: "Lilita One", "Arial Rounded MT Bold", "Trebuchet MS", sans-serif;
     --font-body: "Nunito", "Trebuchet MS", system-ui, sans-serif;
     color-scheme: light;
@@ -162,7 +162,7 @@
   <div class="hud" id="hud" hidden>
     <div class="top">
       <div class="sticker brand">
-        <svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="17" fill="#fff" stroke="#22322a" stroke-width="3"/><path d="M11 8c5 6 5 18 0 24M29 8c-5 6-5 18 0 24" fill="none" stroke="#e2574c" stroke-width="2.4" stroke-dasharray="3 2.2"/></svg>
+        <svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="17" fill="#fff" stroke="#0b2a1d" stroke-width="3"/><path d="M11 8c5 6 5 18 0 24M29 8c-5 6-5 18 0 24" fill="none" stroke="#e54230" stroke-width="2.4" stroke-dasharray="3 2.2"/></svg>
         <span class="words"><b>HOME RUN CLUB</b><small>DERBY MODE</small></span>
       </div>
       <div class="sticker timer" id="timer-box">
@@ -172,27 +172,27 @@
       <div class="right">
         <div class="sticker hr-count"><span class="n" id="hrs">00</span><span class="l">HOME<br>RUNS</span></div>
         <button class="sticker round-btn" id="pause" type="button" aria-label="Pause">
-          <svg viewBox="0 0 22 22" aria-hidden="true"><rect x="4" y="3" width="5" height="16" rx="1.5" fill="#22322a"/><rect x="13" y="3" width="5" height="16" rx="1.5" fill="#22322a"/></svg>
+          <svg viewBox="0 0 22 22" aria-hidden="true"><rect x="4" y="3" width="5" height="16" rx="1.5" fill="#0b2a1d"/><rect x="13" y="3" width="5" height="16" rx="1.5" fill="#0b2a1d"/></svg>
         </button>
       </div>
     </div>
     <div class="bottom">
       <div class="sticker best">
-        <svg viewBox="0 0 34 34" aria-hidden="true"><path d="M17 3l4.2 8.6 9.4 1.4-6.8 6.6 1.6 9.4L17 24.6 8.6 29l1.6-9.4L3.4 13l9.4-1.4z" fill="#f2c14e" stroke="#22322a" stroke-width="2.5" stroke-linejoin="round"/></svg>
+        <svg viewBox="0 0 34 34" aria-hidden="true"><path d="M17 3l4.2 8.6 9.4 1.4-6.8 6.6 1.6 9.4L17 24.6 8.6 29l1.6-9.4L3.4 13l9.4-1.4z" fill="#f6c34f" stroke="#0b2a1d" stroke-width="2.5" stroke-linejoin="round"/></svg>
         <span class="words"><small>BEST HIT</small><b id="best-hit">— FT</b></span>
       </div>
       <div class="meter" aria-hidden="true">
         <svg viewBox="0 0 240 118" id="meter">
-          <path id="arc-bg" fill="none" stroke="#22322a" stroke-width="34" stroke-linecap="butt"/>
-          <path id="arc-early" fill="none" stroke="#1f5e45" stroke-width="26"/>
-          <path id="arc-good" fill="none" stroke="#3f8f62" stroke-width="26"/>
-          <path id="arc-perfect" fill="none" stroke="#8fd3a5" stroke-width="26"/>
-          <g id="needle"><path d="M120 8 l-9 -12 h18 z" fill="#e2574c" stroke="#22322a" stroke-width="2.5" stroke-linejoin="round"/></g>
+          <path id="arc-bg" fill="none" stroke="#0b2a1d" stroke-width="34" stroke-linecap="butt"/>
+          <path id="arc-early" fill="none" stroke="#16583f" stroke-width="26"/>
+          <path id="arc-good" fill="none" stroke="#3d8a4e" stroke-width="26"/>
+          <path id="arc-perfect" fill="none" stroke="#a6dd6e" stroke-width="26"/>
+          <g id="needle"><path d="M120 8 l-9 -12 h18 z" fill="#e54230" stroke="#0b2a1d" stroke-width="2.5" stroke-linejoin="round"/></g>
         </svg>
         <span class="sticker cap">TIME YOUR SWING</span>
       </div>
       <button class="sticker swing" id="swing" type="button">
-        <span class="icon"><svg viewBox="0 0 40 40" aria-hidden="true"><path d="M8 34l-3-3 22-24c2-2 6-3 8-1s1 6-1 8z" fill="#fbf3dc" stroke="#22322a" stroke-width="2.5" stroke-linejoin="round"/><circle cx="7" cy="33" r="3" fill="#fbf3dc" stroke="#22322a" stroke-width="2.5"/></svg></span>
+        <span class="icon"><svg viewBox="0 0 40 40" aria-hidden="true"><path d="M8 34l-3-3 22-24c2-2 6-3 8-1s1 6-1 8z" fill="#fcefd6" stroke="#0b2a1d" stroke-width="2.5" stroke-linejoin="round"/><circle cx="7" cy="33" r="3" fill="#fcefd6" stroke="#0b2a1d" stroke-width="2.5"/></svg></span>
         <span class="words"><b>SWING</b><small>SPACE / TAP</small></span>
       </button>
     </div>
@@ -201,7 +201,7 @@
   <section class="overlay" id="title">
     <div class="sticker panel">
       <div class="logo">
-        <svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="17" fill="#fff" stroke="#22322a" stroke-width="3"/><path d="M11 8c5 6 5 18 0 24M29 8c-5 6-5 18 0 24" fill="none" stroke="#e2574c" stroke-width="2.4" stroke-dasharray="3 2.2"/></svg>
+        <svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="17" fill="#fff" stroke="#0b2a1d" stroke-width="3"/><path d="M11 8c5 6 5 18 0 24M29 8c-5 6-5 18 0 24" fill="none" stroke="#e54230" stroke-width="2.4" stroke-dasharray="3 2.2"/></svg>
         <h1>HOME RUN CLUB</h1>
         <span>DERBY MODE</span>
       </div>
@@ -244,12 +244,12 @@
   const CONTACT_MS = 70;  // the bat reaches the hitting zone this long after you tap
   const WINDOWS = { perfect: 55, good: 110, okay: 190 }; // ms either side of the ideal tap
   const BATS = [
-    { id: "wood",     name: "Wood",     note: "Classic",            size: 1.0,  power: 1.0,  unlock: 0,  color: "#d9a066" },
+    { id: "wood",     name: "Wood",     note: "Classic",            size: 1.0,  power: 1.0,  unlock: 0,  color: "#f0b46c" },
     { id: "aluminum", name: "Aluminum", note: "Bigger sweet spot",  size: 1.3,  power: 1.0,  unlock: 10, color: "#c9d2e0" },
     { id: "slugger",  name: "Slugger",  note: "More power",         size: 1.0,  power: 1.1,  unlock: 30, color: "#3a3a3a" },
-    { id: "golden",   name: "Golden",   note: "Sweet spot + power", size: 1.35, power: 1.12, unlock: 75, color: "#f2c14e" },
+    { id: "golden",   name: "Golden",   note: "Sweet spot + power", size: 1.35, power: 1.12, unlock: 75, color: "#f6c34f" },
   ];
-  const INK = "#22322a", CREAM = "#fbf3dc", RED = "#e2574c";
+  const INK = "#0b2a1d", CREAM = "#fcefd6", RED = "#e54230";
 
   // ================= Save (per-browser; game works without it) =================
   const SAVE_KEY = "hrclub.v1";
@@ -267,27 +267,115 @@
   const rand = (a, b) => a + Math.random() * (b - a);
   const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
   const lerp = (a, b, t) => a + (b - a) * t;
-  function seeded(seed) { return () => (seed = (seed * 16807) % 2147483647) / 2147483647; }
 
   // A pausable clock: all game timing uses this, so pausing freezes pitches and the timer.
   let pausedAt = 0, pausedTotal = 0;
   const clock = () => (pausedAt || performance.now()) - pausedTotal;
 
+  // ================= Art & rig config =================
+  // Everything about where the artwork sits lives here. Coordinates are in each image's own pixels,
+  // so you can read them straight off the image in any editor. Open the page with #rig on the end of
+  // the link (or press G during play) to see every anchor and pivot drawn on top of the art.
+  const ASSETS = {
+    background: {
+      src: "assets/sandlot.webp", w: 1672, h: 941,
+      batterFeet: { x: 300, y: 862 },  // where the batter stands (left batter's box)
+      plate: { x: 565, y: 800 },
+      machine: { x: 1400, y: 628 },    // on the mound dirt
+      fenceTop: 425, fenceBase: 540,   // home runs clear this line
+      fieldCenterX: 836, fieldSpread: 700,
+      portraitWindow: [110, 1000],     // background x-range fitted across a portrait phone
+      portraitFeetAt: 0.66,            // batter's feet at this fraction of a portrait screen's height
+    },
+    body: {
+      src: "assets/batter-body.webp",
+      anchor: { x: 640, y: 1247 },     // on the ground between the feet; the whole batter is placed by this
+      shoulder: { x: 805, y: 452 },    // front shoulder socket: the arms pivot here
+      height: 1200,                    // sprite height used for scaling
+      heightOnBackground: 500,         // how tall the batter stands, in background pixels
+    },
+    arms: {
+      src: "assets/batter-arms.webp",
+      pivot: { x: 1175, y: 525 },      // centre of the shoulder sleeve (sits on body.shoulder)
+      grip: { x: 330, y: 430 },        // where the bat handle passes through the fists
+      thickness: 0.32,                 // width relative to the body; length stretches to reach the hands
+    },
+    bat: {
+      src: "assets/bat.webp",
+      grip: { x: 512, y: 1200 },       // middle of the hands on the handle (drawn behind the fists)
+      tip: { x: 512, y: 107 },
+      scale: 0.48,                     // relative to the body
+      sweetSpot: 0.72,                 // 0 = grip, 1 = tip: where the ball is struck
+    },
+  };
+
+  // Batter keyframes, in body-sprite pixels measured from body.anchor.
+  //   hx, hy  where the hands (bat grip) are
+  //   e, a    bat elevation and direction in degrees (a: 0 = toward the pitcher, 180 = straight back,
+  //           90 = toward the camera), so the bat sweeps around the body and foreshortens
+  //   lean    body shift toward the pitcher, tilt = body rotation (degrees), squash = body height scale
+  const POSES = {
+    stance:  { hx: -190, hy: -830, e: 55, a: 180, lean: 0,   tilt: 0,    squash: 1 },
+    load:    { hx: -250, hy: -850, e: 66, a: 196, lean: -18, tilt: -2.5, squash: 0.985 }, // anticipation
+    contact: { hx: 330,  hy: -620, e: -4, a: 0,   lean: 22,  tilt: 3,    squash: 1 },
+    finish:  { hx: 360,  hy: -870, e: 45, a: -150, lean: 26, tilt: 4,    squash: 1.012 },
+  };
+  // Swing timing in ms. The swing itself is CONTACT_MS (tap → bat on ball).
+  const MOTION = {
+    loadStart: 0.45,     // start loading this far into the pitch (0 = release, 1 = ideal moment to tap)
+    unload: 300,         // ease back to stance after taking a pitch
+    followThrough: 220,
+    hold: 360,
+    recover: 380,
+    breathe: 0.006,      // idle body bob
+  };
+
+  const BG = ASSETS.background;
+  const img = {};
+  function loadArt() {
+    return Promise.all(Object.entries(ASSETS).map(([key, a]) => new Promise((resolve, reject) => {
+      const im = new Image();
+      im.onload = () => { img[key] = im; resolve(); };
+      im.onerror = () => reject(a.src);
+      im.src = a.src;
+    })));
+  }
+  const SKY = "#3dbbfc", DIRT = "#d9925a";
+  let showRig = location.hash === "#rig";
+
   // ================= Layout =================
-  let W = 0, H = 0, DPR = 1, L = null, bgCanvas = null, grain = null;
+  let W = 0, H = 0, DPR = 1, L = null;
   function layout() {
     const land = W >= H * 1.15;
-    const k = land ? Math.min(W / 1000, H / 600) : Math.min(W / 560, H / 980);
-    const fenceBase = H * (land ? 0.6 : 0.5);
-    const feetY = H * (land ? 0.82 : 0.68);
-    const bx = W * (land ? 0.24 : 0.27);
-    const mx = W * (land ? 0.83 : 0.8);
-    const my = lerp(fenceBase, feetY, 0.32);
+    let sc, ox, oy;
+    if (land) {
+      // Cover the screen; if anything is cropped, crop sky before ground.
+      sc = Math.max(W / BG.w, H / BG.h);
+      ox = (W - BG.w * sc) / 2;
+      oy = H - BG.h * sc;
+    } else {
+      // Portrait: fit the batter's box and infield to the width; extend sky above and dirt below.
+      const [x0, x1] = BG.portraitWindow;
+      sc = W / (x1 - x0);
+      ox = -x0 * sc;
+      oy = H * BG.portraitFeetAt - BG.batterFeet.y * sc;
+    }
+    const P = (x, y) => ({ x: ox + x * sc, y: oy + y * sc });
+    const k = sc / 0.77;
+    const feet = P(BG.batterFeet.x, BG.batterFeet.y);
+    const bodyScale = (ASSETS.body.heightOnBackground / ASSETS.body.height) * sc;
+    const km = k * 0.8;
+    const mound = land ? P(BG.machine.x, BG.machine.y) : { x: W - 50 * k, y: P(0, BG.machine.y + 22).y };
+    const contactBody = sweetSpot(project(POSES.contact));
     return {
-      land, k, fenceBase, fenceTop: fenceBase - 78 * k, feetY, bx, mx, my, km: k * 0.78,
-      plate: { x: bx + 118 * k, y: feetY + 8 * k },
-      contact: { x: bx + 120 * k * 1.05, y: feetY - 150 * k * 1.05 },
-      mouth: { x: mx - 58 * k * 0.78, y: my - 112 * k * 0.78 },
+      land, k, sc, ox, oy, km,
+      fenceTop: P(0, BG.fenceTop).y, fenceBase: P(0, BG.fenceBase).y,
+      bx: feet.x, feetY: feet.y, bodyScale,
+      plate: P(BG.plate.x, BG.plate.y), groundY: P(0, BG.plate.y).y,
+      fieldX: P(BG.fieldCenterX, 0).x, spread: BG.fieldSpread * sc,
+      mx: mound.x, my: mound.y,
+      mouth: { x: mound.x - 56 * km, y: mound.y - 144 * km },
+      contact: { x: feet.x + contactBody.x * bodyScale, y: feet.y + contactBody.y * bodyScale },
     };
   }
   function resize() {
@@ -295,231 +383,6 @@
     W = canvas.clientWidth; H = canvas.clientHeight;
     canvas.width = Math.round(W * DPR); canvas.height = Math.round(H * DPR);
     L = layout();
-    buildGrain();
-    buildBackground();
-  }
-
-  // Paper grain gives the flat shapes a printed, hand-made feel.
-  function buildGrain() {
-    const g = document.createElement("canvas"); g.width = g.height = 160;
-    const c = g.getContext("2d"), r = seeded(7);
-    for (let i = 0; i < 2600; i++) {
-      c.fillStyle = r() < 0.5 ? "rgba(60,40,20,0.10)" : "rgba(255,255,255,0.10)";
-      c.fillRect(r() * 160, r() * 160, 1 + r() * 1.5, 1 + r() * 1.5);
-    }
-    grain = ctx.createPattern(g, "repeat");
-  }
-
-  // ================= Static background (drawn once per resize) =================
-  function blob(c, x, y, r, fill, line = 2) {
-    c.beginPath(); c.arc(x, y, r, 0, Math.PI * 2);
-    c.fillStyle = fill; c.fill();
-    if (line) { c.lineWidth = line; c.strokeStyle = INK; c.stroke(); }
-  }
-  function cloud(c, x, y, s) {
-    c.save(); c.translate(x, y); c.scale(s, s);
-    c.fillStyle = "#fffaf0"; c.strokeStyle = "rgba(34,50,42,0.25)"; c.lineWidth = 2;
-    c.beginPath();
-    for (const [cx, cy, r] of [[0, 0, 26], [28, -14, 30], [62, -6, 26], [88, 4, 20], [42, 10, 24], [14, 12, 18]]) {
-      c.moveTo(cx + r, cy); c.arc(cx, cy, r, 0, Math.PI * 2);
-    }
-    c.fill(); c.stroke();
-    c.restore();
-  }
-  function tree(c, x, base, s, r) {
-    // Broadleaf tree: trunk + clustered canopy with shadow and highlight passes.
-    c.fillStyle = "#6b4a32"; c.strokeStyle = INK; c.lineWidth = 2;
-    c.beginPath(); c.rect(x - 6 * s, base - 70 * s, 12 * s, 70 * s); c.fill(); c.stroke();
-    const puffs = [];
-    for (let i = 0; i < 9; i++) puffs.push([x + (r() - 0.5) * 110 * s, base - 90 * s - r() * 90 * s, (28 + r() * 22) * s]);
-    for (const [px, py, pr] of puffs) blob(c, px, py, pr + 2, "#3f7a35", 2.4);
-    for (const [px, py, pr] of puffs) blob(c, px, py, pr, "#5f9b45", 0);
-    for (const [px, py, pr] of puffs) blob(c, px - pr * 0.25, py - pr * 0.3, pr * 0.55, "#86bf5c", 0);
-  }
-  function pine(c, x, base, s) {
-    c.fillStyle = "#2f6a3c"; c.strokeStyle = INK; c.lineWidth = 2;
-    for (let i = 0; i < 4; i++) {
-      const w = (60 - i * 12) * s, y = base - i * 34 * s;
-      c.beginPath(); c.moveTo(x - w, y); c.lineTo(x, y - 60 * s); c.lineTo(x + w, y); c.closePath(); c.fill(); c.stroke();
-    }
-  }
-  function house(c, x, base, s, wall, roof) {
-    c.save(); c.translate(x, base); c.scale(s, s);
-    c.strokeStyle = INK; c.lineWidth = 2.2;
-    c.fillStyle = wall; c.beginPath(); c.rect(-50, -60, 100, 60); c.fill(); c.stroke();
-    c.fillStyle = roof; c.beginPath(); c.moveTo(-60, -58); c.lineTo(0, -100); c.lineTo(60, -58); c.closePath(); c.fill(); c.stroke();
-    c.fillStyle = "#cfe6f0";
-    for (const wx of [-34, 14]) { c.beginPath(); c.rect(wx, -46, 20, 18); c.fill(); c.stroke(); }
-    c.fillStyle = roof; c.beginPath(); c.rect(22, -112, 12, 26); c.fill(); c.stroke(); // chimney
-    c.restore();
-  }
-
-  function buildBackground() {
-    bgCanvas = document.createElement("canvas");
-    bgCanvas.width = canvas.width; bgCanvas.height = canvas.height;
-    const c = bgCanvas.getContext("2d");
-    c.setTransform(DPR, 0, 0, DPR, 0, 0);
-    const { k, fenceBase, fenceTop } = L;
-    const r = seeded(42);
-
-    // Sky
-    const sky = c.createLinearGradient(0, 0, 0, fenceTop);
-    sky.addColorStop(0, "#6fbfe6"); sky.addColorStop(1, "#cdeaf2");
-    c.fillStyle = sky; c.fillRect(0, 0, W, fenceBase);
-    cloud(c, W * 0.55, fenceTop * 0.35, k * 1.3);
-    cloud(c, W * 0.8, fenceTop * 0.55, k * 1.0);
-    cloud(c, W * 0.12, fenceTop * 0.6, k * 0.8);
-
-    // Distant hills
-    c.fillStyle = "#9cc3c9"; c.strokeStyle = "rgba(34,50,42,0.3)"; c.lineWidth = 2;
-    c.beginPath(); c.moveTo(0, fenceTop);
-    for (let x = 0; x <= W; x += 40) c.lineTo(x, fenceTop - 70 * k - Math.sin(x / (160 * k)) * 30 * k);
-    c.lineTo(W, fenceTop); c.closePath(); c.fill(); c.stroke();
-
-    // Houses, poles, trees behind the fence
-    const houses = [[0.3, "#f3e3c3", "#b9533f"], [0.52, "#bcd3e6", "#7a4a3a"], [0.92, "#f3e3c3", "#8a5a3f"], [0.08, "#e8d6ad", "#6e4b3a"]];
-    for (const [fx, wall, roof] of houses) house(c, W * fx, fenceTop + 4 * k, k * 0.9, wall, roof);
-    for (const fx of [0.68, 0.18]) {
-      const px = W * fx;
-      c.strokeStyle = "#5b4636"; c.lineWidth = 5 * k;
-      c.beginPath(); c.moveTo(px, fenceTop); c.lineTo(px, fenceTop - 190 * k); c.stroke();
-      c.lineWidth = 4 * k; c.beginPath(); c.moveTo(px - 26 * k, fenceTop - 175 * k); c.lineTo(px + 26 * k, fenceTop - 175 * k); c.stroke();
-    }
-    c.strokeStyle = "rgba(34,50,42,0.6)"; c.lineWidth = 1.2;
-    c.beginPath(); c.moveTo(0, fenceTop - 160 * k); c.quadraticCurveTo(W * 0.43, fenceTop - 130 * k, W, fenceTop - 168 * k); c.stroke();
-    for (let i = 0; i < Math.ceil(W / (120 * k)) + 1; i++) {
-      const x = i * 120 * k + (r() - 0.5) * 50 * k;
-      if (r() < 0.25) pine(c, x, fenceTop + 6 * k, k * (0.8 + r() * 0.4));
-      else tree(c, x, fenceTop + 8 * k, k * (0.8 + r() * 0.5), r);
-    }
-
-    // Wooden fence
-    const plank = 26 * k;
-    for (let x = 0, i = 0; x < W; x += plank, i++) {
-      const h = (i % 3 === 0 ? 6 : 0) * k;
-      c.fillStyle = i % 2 ? "#7a6550" : "#6f5b47";
-      c.fillRect(x, fenceTop - h, plank, fenceBase - fenceTop + h);
-      c.strokeStyle = "rgba(34,50,42,0.55)"; c.lineWidth = 1.5;
-      c.strokeRect(x, fenceTop - h, plank, fenceBase - fenceTop + h);
-    }
-    c.fillStyle = "#5c4a39"; c.fillRect(0, fenceTop + 14 * k, W, 6 * k); c.fillRect(0, fenceBase - 22 * k, W, 6 * k);
-    c.strokeStyle = INK; c.lineWidth = 2.5; c.beginPath(); c.moveTo(0, fenceBase); c.lineTo(W, fenceBase); c.stroke();
-    // Painted lettering
-    c.save();
-    c.translate(W * 0.38, fenceTop + (fenceBase - fenceTop) * 0.62); c.rotate(-0.1);
-    c.font = `${Math.round(40 * k)}px ${FONT}`; c.textAlign = "center";
-    c.fillStyle = "rgba(240,226,196,0.85)"; c.fillText("GO LONG!", 0, 0);
-    c.strokeStyle = "rgba(240,226,196,0.85)"; c.lineWidth = 3 * k;
-    c.beginPath(); c.moveTo(-70 * k, 10 * k); c.quadraticCurveTo(0, 18 * k, 80 * k, 2 * k); c.stroke();
-    c.restore();
-    if (W > 520) {
-      const sx = W * 0.58, sy = fenceTop + 6 * k, sw = 120 * k, sh = fenceBase - fenceTop - 14 * k;
-      c.fillStyle = "#6a5642"; c.strokeStyle = "rgba(240,226,196,0.7)"; c.lineWidth = 2;
-      c.fillRect(sx - sw / 2, sy, sw, sh); c.strokeRect(sx - sw / 2 + 4, sy + 4, sw - 8, sh - 8);
-      c.fillStyle = "rgba(240,226,196,0.85)"; c.font = `${Math.round(15 * k)}px ${FONT}`; c.textAlign = "center";
-      c.fillText("RIVERDALE", sx, sy + sh * 0.3); c.fillText("SANDLOT", sx, sy + sh * 0.88);
-      c.lineWidth = 4 * k; c.beginPath();
-      c.moveTo(sx - 14 * k, sy + sh * 0.42); c.lineTo(sx + 14 * k, sy + sh * 0.7);
-      c.moveTo(sx + 14 * k, sy + sh * 0.42); c.lineTo(sx - 14 * k, sy + sh * 0.7); c.stroke();
-    }
-
-    // Grass
-    const grass = c.createLinearGradient(0, fenceBase, 0, H);
-    grass.addColorStop(0, "#8fc25a"); grass.addColorStop(1, "#6aa441");
-    c.fillStyle = grass; c.fillRect(0, fenceBase, W, H - fenceBase);
-    c.fillStyle = "rgba(255,255,255,0.06)";
-    for (let i = 0; i < 6; i++) c.fillRect(0, fenceBase + (H - fenceBase) * (i / 6) * 0.45, W, 8 * k);
-
-    // Infield dirt
-    const dirtTop = lerp(fenceBase, L.feetY, 0.45);
-    c.fillStyle = "#c99a62"; c.strokeStyle = "rgba(34,50,42,0.35)"; c.lineWidth = 2;
-    c.beginPath();
-    c.moveTo(-10, dirtTop + 40 * k);
-    c.bezierCurveTo(W * 0.3, dirtTop - 10 * k, W * 0.7, dirtTop - 6 * k, W + 10, dirtTop + 20 * k);
-    c.lineTo(W + 10, H + 10); c.lineTo(-10, H + 10); c.closePath(); c.fill(); c.stroke();
-    // Machine's patch of dirt
-    c.beginPath(); c.ellipse(L.mx, L.my + 4 * k, 110 * k, 26 * k, 0, 0, Math.PI * 2); c.fillStyle = "#c99a62"; c.fill(); c.stroke();
-    // Pebbles and scuffs
-    for (let i = 0; i < 140; i++) {
-      const x = r() * W, y = lerp(dirtTop + 20 * k, H, r());
-      c.fillStyle = r() < 0.5 ? "rgba(90,60,35,0.35)" : "rgba(250,230,200,0.35)";
-      c.beginPath(); c.ellipse(x, y, (1 + r() * 2.5) * k, (0.8 + r() * 1.5) * k, 0, 0, Math.PI * 2); c.fill();
-    }
-    // Chalk: batter's box, foul line, plate
-    const p = L.plate;
-    c.strokeStyle = "rgba(250,248,240,0.9)"; c.lineWidth = 5 * k; c.lineJoin = "round";
-    const box = (x0, w) => { c.beginPath(); c.moveTo(x0, p.y - 30 * k); c.lineTo(x0 + w, p.y - 30 * k); c.lineTo(x0 + w - 30 * k, p.y + 50 * k); c.lineTo(x0 - 30 * k, p.y + 50 * k); c.closePath(); c.stroke(); };
-    box(p.x - 210 * k, 150 * k);
-    box(p.x + 70 * k, 150 * k);
-    c.beginPath(); c.moveTo(p.x + 40 * k, p.y - 20 * k); c.lineTo(W + 20, p.y - 80 * k - (W - p.x) * 0.12); c.stroke();
-    c.beginPath(); c.moveTo(p.x - 40 * k, p.y - 20 * k); c.lineTo(-20, p.y - 30 * k); c.stroke();
-    c.fillStyle = "#f6f3ea"; c.strokeStyle = INK; c.lineWidth = 2.5;
-    c.beginPath(); c.moveTo(p.x - 44 * k, p.y - 10 * k); c.lineTo(p.x + 40 * k, p.y - 10 * k); c.lineTo(p.x + 52 * k, p.y + 6 * k); c.lineTo(p.x + 6 * k, p.y + 18 * k); c.lineTo(p.x - 50 * k, p.y + 6 * k); c.closePath(); c.fill(); c.stroke();
-
-    // Foreground grass tufts
-    c.fillStyle = "#5d9a3a"; c.strokeStyle = INK; c.lineWidth = 1.5;
-    for (let i = 0; i < 26; i++) {
-      const x = r() * W, y = H - r() * 18 * k;
-      if (x > W * 0.3 && x < W * 0.7) continue;
-      c.beginPath(); c.moveTo(x - 8 * k, y + 4); c.lineTo(x - 3 * k, y - 22 * k * (0.6 + r())); c.lineTo(x + 1 * k, y - 4); c.lineTo(x + 5 * k, y - 18 * k * (0.6 + r())); c.lineTo(x + 9 * k, y + 4); c.closePath(); c.fill(); c.stroke();
-    }
-  }
-
-  // ================= Dynamic pieces =================
-  const crowd = (() => {
-    const r = seeded(9), people = [];
-    const caps = ["#1f5e45", "#e2574c", "#3a6fb0", "#f2c14e", "#1f5e45", "#7a4a8a"];
-    const skins = ["#f1c9a0", "#d9a77c", "#b97a54", "#8a5a3c", "#f6d8b8"];
-    for (let i = 0; i < 26; i++) people.push({ u: r(), row: Math.floor(r() * 2), cap: caps[i % caps.length], skin: skins[Math.floor(r() * skins.length)], shirt: caps[(i * 3 + 1) % caps.length], phase: r() * 6 });
-    return people;
-  })();
-  function drawStand(side, now) {
-    const { k, fenceBase } = L;
-    const w = Math.min(W * 0.2, 230 * k), x0 = side < 0 ? -6 : W - w + 6;
-    const top = fenceBase - 120 * k, rail = fenceBase - 40 * k;
-    // Seats backing
-    ctx.fillStyle = "#b9b2a2"; ctx.strokeStyle = INK; ctx.lineWidth = 2;
-    ctx.beginPath(); ctx.rect(x0, top, w, fenceBase - top + 10 * k); ctx.fill(); ctx.stroke();
-    // Fans
-    const cheering = now < game.cheerUntil;
-    for (const p of crowd) {
-      if ((p.u < 0.5) !== (side < 0)) continue;
-      const u = (p.u % 0.5) * 2;
-      const x = x0 + 14 * k + u * (w - 28 * k);
-      const bounce = cheering ? Math.abs(Math.sin(now / 120 + p.phase)) * 8 * k : Math.sin(now / 900 + p.phase) * 1.2 * k;
-      const y = rail - 8 * k - p.row * 26 * k - bounce;
-      ctx.fillStyle = p.shirt; ctx.beginPath(); ctx.ellipse(x, y + 18 * k, 11 * k, 12 * k, 0, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
-      if (cheering) {
-        ctx.strokeStyle = p.skin; ctx.lineWidth = 4 * k; ctx.lineCap = "round";
-        ctx.beginPath(); ctx.moveTo(x - 8 * k, y + 12 * k); ctx.lineTo(x - 14 * k, y - 8 * k); ctx.moveTo(x + 8 * k, y + 12 * k); ctx.lineTo(x + 14 * k, y - 8 * k); ctx.stroke();
-        ctx.strokeStyle = INK; ctx.lineWidth = 2;
-      }
-      ctx.fillStyle = p.skin; ctx.beginPath(); ctx.arc(x, y, 9 * k, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
-      ctx.fillStyle = p.cap; ctx.beginPath(); ctx.arc(x, y - 2 * k, 9.5 * k, Math.PI, 0); ctx.fill(); ctx.stroke();
-      ctx.fillRect(x + (side < 0 ? 0 : -12 * k), y - 3 * k, 12 * k, 3 * k);
-    }
-    // Chain-link front, railing and bunting
-    ctx.fillStyle = "#c9c4b6"; ctx.beginPath(); ctx.rect(x0, rail, w, fenceBase - rail + 12 * k); ctx.fill(); ctx.stroke();
-    ctx.strokeStyle = "rgba(34,50,42,0.35)"; ctx.lineWidth = 1;
-    for (let x = x0; x < x0 + w; x += 9 * k) { ctx.beginPath(); ctx.moveTo(x, rail); ctx.lineTo(x + 12 * k, fenceBase + 12 * k); ctx.moveTo(x + 12 * k, rail); ctx.lineTo(x, fenceBase + 12 * k); ctx.stroke(); }
-    ctx.strokeStyle = INK; ctx.lineWidth = 2;
-    ctx.fillStyle = "#8a8578"; ctx.fillRect(x0, rail - 4 * k, w, 6 * k); ctx.strokeRect(x0, rail - 4 * k, w, 6 * k);
-    const colors = [RED, CREAM, "#3a6fb0"];
-    const n = Math.max(3, Math.floor(w / (30 * k)));
-    for (let i = 0; i < n; i++) {
-      const bx0 = x0 + (i / n) * w, bw = w / n;
-      ctx.fillStyle = colors[i % 3];
-      ctx.beginPath(); ctx.moveTo(bx0, rail + 2 * k); ctx.lineTo(bx0 + bw, rail + 2 * k); ctx.lineTo(bx0 + bw / 2, rail + 24 * k); ctx.closePath(); ctx.fill(); ctx.stroke();
-    }
-    // Light tower behind the left stand
-    if (side < 0) {
-      const lx = x0 + w * 0.35;
-      ctx.strokeStyle = "#5b4636"; ctx.lineWidth = 5 * k; ctx.beginPath(); ctx.moveTo(lx, top); ctx.lineTo(lx, top - 150 * k); ctx.stroke();
-      ctx.fillStyle = "#4a4f4a"; ctx.strokeStyle = INK; ctx.lineWidth = 2;
-      ctx.beginPath(); ctx.rect(lx - 26 * k, top - 168 * k, 52 * k, 22 * k); ctx.fill(); ctx.stroke();
-      ctx.fillStyle = "#fff6c8";
-      for (let i = 0; i < 3; i++) { ctx.beginPath(); ctx.arc(lx - 16 * k + i * 16 * k, top - 157 * k, 5 * k, 0, Math.PI * 2); ctx.fill(); }
-    }
   }
 
   function drawMachine(now) {
@@ -528,9 +391,9 @@
     ctx.save(); ctx.translate(mx, my); ctx.scale(km, km);
     ctx.strokeStyle = INK; ctx.lineWidth = 3; ctx.lineJoin = "round";
     // Shadow
-    ctx.fillStyle = "rgba(34,50,42,0.18)"; ctx.beginPath(); ctx.ellipse(10, 4, 90, 14, 0, 0, Math.PI * 2); ctx.fill();
+    ctx.fillStyle = "rgba(11,42,29,0.18)"; ctx.beginPath(); ctx.ellipse(10, 4, 90, 14, 0, 0, Math.PI * 2); ctx.fill();
     // Tripod legs + wheels
-    ctx.lineWidth = 6; ctx.strokeStyle = "#2f5e48";
+    ctx.lineWidth = 6; ctx.strokeStyle = "#0f4630";
     ctx.beginPath(); ctx.moveTo(0, -70); ctx.lineTo(-44, -4); ctx.moveTo(0, -70); ctx.lineTo(40, -4); ctx.moveTo(0, -70); ctx.lineTo(8, -8); ctx.stroke();
     ctx.lineWidth = 3; ctx.strokeStyle = INK;
     for (const wx of [-44, 40]) { ctx.fillStyle = "#333"; ctx.beginPath(); ctx.arc(wx, -4, 9, 0, Math.PI * 2); ctx.fill(); ctx.stroke(); ctx.fillStyle = "#aaa"; ctx.beginPath(); ctx.arc(wx, -4, 3, 0, Math.PI * 2); ctx.fill(); }
@@ -539,9 +402,9 @@
     for (let i = 0; i < 4; i++) { ctx.fillStyle = "#fff"; ctx.beginPath(); ctx.arc(58 + i * 15, -42, 7, 0, Math.PI * 2); ctx.fill(); ctx.stroke(); }
     ctx.translate(kick, 0);
     // Body
-    ctx.fillStyle = "#2f7a5a"; ctx.beginPath(); ctx.roundRect(-20, -150, 70, 84, 8); ctx.fill(); ctx.stroke();
-    ctx.fillStyle = "#e9e2cc"; ctx.beginPath(); ctx.rect(-8, -138, 46, 30); ctx.fill(); ctx.stroke();
-    ctx.strokeStyle = "#2f7a5a"; ctx.lineWidth = 2;
+    ctx.fillStyle = "#16583f"; ctx.beginPath(); ctx.roundRect(-20, -150, 70, 84, 8); ctx.fill(); ctx.stroke();
+    ctx.fillStyle = "#fcefd6"; ctx.beginPath(); ctx.rect(-8, -138, 46, 30); ctx.fill(); ctx.stroke();
+    ctx.strokeStyle = "#16583f"; ctx.lineWidth = 2;
     for (let i = 0; i < 3; i++) { ctx.beginPath(); ctx.moveTo(-2, -130 + i * 8); ctx.lineTo(32, -130 + i * 8); ctx.stroke(); }
     ctx.strokeStyle = INK; ctx.lineWidth = 3;
     ctx.fillStyle = RED; ctx.beginPath(); ctx.arc(14, -88, 6, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
@@ -552,84 +415,130 @@
     ctx.restore();
   }
 
-  // The bat is posed in 3D (elevation + azimuth around the hands) and projected,
-  // so it sweeps *around* the body instead of chopping down beside it.
-  const BAT_LEN = 118;
-  const STANCE = { hx: -30, hy: -196, e: 55, a: 180 };
-  const CONTACT = { hx: 28, hy: -160, e: -4, a: 0 };
-  const FINISH = { hx: 36, hy: -198, e: 12, a: -165 };
-  function batPose(now) {
-    let from = STANCE, to = STANCE, u = 0, lean = 0;
-    const t = game.swingAt ? now - game.swingAt : -1;
-    if (t >= 0 && t < CONTACT_MS) { from = STANCE; to = CONTACT; u = Math.pow(t / CONTACT_MS, 1.7); lean = 6 * u; }
-    else if (t >= CONTACT_MS && t < CONTACT_MS + 220) { from = CONTACT; to = FINISH; u = 1 - Math.pow(1 - (t - CONTACT_MS) / 220, 2); lean = 6; }
-    else if (t >= CONTACT_MS + 220 && t < 900) { from = to = FINISH; lean = 6; }
-    else if (t >= 900 && t < 1250) { from = FINISH; to = { ...STANCE, a: -180 }; u = (t - 900) / 350; lean = 6 * (1 - u); }
-    const e = lerp(from.e, to.e, u) + (t < 0 ? Math.sin(now / 260) * 3 : 0);
-    const a = lerp(from.a, to.a, u);
-    const er = e * Math.PI / 180, ar = a * Math.PI / 180;
-    return { hx: lerp(from.hx, to.hx, u), hy: lerp(from.hy, to.hy, u), dx: Math.cos(er) * Math.cos(ar), dy: -Math.sin(er), lean };
+  // ================= Batter rig =================
+  // Three layered sprites: body, bat (grip tucked behind the hands) and arms (pivoting at the front shoulder).
+  const smooth = t => t * t * (3 - 2 * t);
+  const lerpPose = (a, b, u) => { const o = {}; for (const key in a) o[key] = lerp(a[key], b[key], u); return o; };
+
+  // Turn a keyframe into drawable values: the bat's projected direction (dx, dy) on screen.
+  function project(kf) {
+    const er = kf.e * Math.PI / 180, ar = kf.a * Math.PI / 180;
+    return { ...kf, dx: Math.cos(er) * Math.cos(ar), dy: -Math.sin(er) };
   }
 
-  function drawBatter(now) {
-    const { bx, feetY, k } = L;
-    const s = k * 1.05;
-    const pose = batPose(now);
-    const lean = pose.lean;
-    ctx.save(); ctx.translate(bx, feetY); ctx.scale(s, s);
-    ctx.strokeStyle = INK; ctx.lineWidth = 3; ctx.lineJoin = "round"; ctx.lineCap = "round";
-    // Shadow
-    ctx.fillStyle = "rgba(34,50,42,0.2)"; ctx.beginPath(); ctx.ellipse(10, 4, 70, 12, 0, 0, Math.PI * 2); ctx.fill();
-    // Legs (wide stance)
-    const leg = (x0, x1, flip) => {
-      ctx.fillStyle = "#efe7d2";
-      ctx.beginPath(); ctx.moveTo(x0 - 16, -112); ctx.lineTo(x0 + 16, -112); ctx.lineTo(x1 + 12, -40); ctx.lineTo(x1 - 14, -40); ctx.closePath(); ctx.fill(); ctx.stroke();
-      ctx.fillStyle = "#1f5e45"; ctx.beginPath(); ctx.rect(x1 - 13, -42, 25, 28); ctx.fill(); ctx.stroke();
-      ctx.beginPath(); ctx.moveTo(x1 - 16 * flip, -14); ctx.lineTo(x1 + 26 * flip, -14); ctx.quadraticCurveTo(x1 + 34 * flip, -2, x1 + 22 * flip, 2); ctx.lineTo(x1 - 16 * flip, 2); ctx.closePath(); ctx.fill(); ctx.stroke();
-      ctx.strokeStyle = "#fff"; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(x1 - 6, -8); ctx.lineTo(x1 + 12 * flip, -8); ctx.stroke(); ctx.strokeStyle = INK; ctx.lineWidth = 3;
-    };
-    leg(-18 + lean, -46, 1);
-    leg(22 + lean, 52, 1);
-    ctx.translate(lean, 0);
-    // Torso
-    ctx.fillStyle = "#efe7d2"; ctx.beginPath(); ctx.roundRect(-34, -200, 66, 96, 18); ctx.fill(); ctx.stroke();
-    ctx.fillStyle = "#1f5e45"; ctx.fillRect(-34, -120, 66, 10); ctx.strokeRect(-34, -120, 66, 10);
-    ctx.strokeStyle = "#1f5e45"; ctx.lineWidth = 4; ctx.beginPath(); ctx.moveTo(-2, -198); ctx.lineTo(-2, -122); ctx.stroke(); ctx.strokeStyle = INK; ctx.lineWidth = 3;
-    // Little pine tree crest
-    ctx.fillStyle = "#1f5e45"; ctx.beginPath(); ctx.moveTo(12, -176); ctx.lineTo(20, -160); ctx.lineTo(4, -160); ctx.closePath(); ctx.fill();
-    // Arms + bat
-    const { hx, hy, dx, dy } = pose;
-    const arm = (sx, sy) => {
-      ctx.lineCap = "round";
-      ctx.strokeStyle = INK; ctx.lineWidth = 22; ctx.beginPath(); ctx.moveTo(sx, sy); ctx.quadraticCurveTo((sx + hx) / 2 + 6, Math.max(sy, hy) + 16, hx, hy); ctx.stroke();
-      ctx.strokeStyle = "#efe7d2"; ctx.lineWidth = 16; ctx.stroke();
-      ctx.strokeStyle = INK; ctx.lineWidth = 3;
-    };
-    arm(22, -186); // front arm (behind the bat)
-    const len = Math.hypot(dx, dy) * BAT_LEN;
-    ctx.save(); ctx.translate(hx, hy); ctx.rotate(Math.atan2(dy, dx));
-    if (game.swingAt && now - game.swingAt > 20 && now - game.swingAt < CONTACT_MS + 40) {
-      // Motion smear across the hitting zone
-      ctx.fillStyle = "rgba(255,253,246,0.45)";
-      ctx.beginPath(); ctx.moveTo(0, 0); ctx.lineTo(len, -6); ctx.lineTo(len * 0.9, 26); ctx.closePath(); ctx.fill();
+  // Anticipation: the batter loads (weight back, hands back) as the ball comes in.
+  function loadAmount(now) {
+    if (game.mode !== "play" || game.phase !== "pitch" || !game.pitch.release || now < game.pitch.release) return 0;
+    const ideal = game.pitch.arrival - CONTACT_MS;
+    const f = (now - game.pitch.release) / (ideal - game.pitch.release);
+    let amount = smooth(clamp((f - MOTION.loadStart) / (1 - MOTION.loadStart), 0, 1));
+    const late = now - (game.pitch.arrival + 120);
+    if (late > 0) amount *= 1 - smooth(clamp(late / MOTION.unload, 0, 1));
+    return amount;
+  }
+  function restingPose(now) {
+    const p = lerpPose(POSES.stance, POSES.load, loadAmount(now));
+    p.squash *= 1 + Math.sin(now / 520) * MOTION.breathe;
+    p.e += Math.sin(now / 340) * 2;
+    return p;
+  }
+  // Tap → fast swing to contact → follow-through → hold → recover to stance.
+  function batterPose(now) {
+    const t = game.swingAt ? now - game.swingAt : -1;
+    const { followThrough: ft, hold, recover } = MOTION;
+    let kf;
+    if (t < 0) kf = restingPose(now);
+    else if (t < CONTACT_MS) kf = lerpPose(game.swingFrom, POSES.contact, Math.pow(t / CONTACT_MS, 1.8));
+    else if (t < CONTACT_MS + ft) kf = lerpPose(POSES.contact, POSES.finish, 1 - Math.pow(1 - (t - CONTACT_MS) / ft, 2.2));
+    else if (t < CONTACT_MS + ft + hold) {
+      kf = { ...POSES.finish };
+      kf.squash *= 1 - 0.01 * Math.sin((t - CONTACT_MS - ft) / hold * Math.PI); // settle
+    } else if (t < CONTACT_MS + ft + hold + recover) {
+      const back = { ...POSES.stance, a: POSES.stance.a - 360 };   // keep turning the same way round
+      kf = lerpPose(POSES.finish, back, smooth((t - CONTACT_MS - ft - hold) / recover));
+    } else kf = restingPose(now);
+    return project(kf);
+  }
+
+  // Body-space point → feet-anchored space (applies lean, tilt and squash, same as drawBatter).
+  function bodyToFeet(p, x, y) {
+    const r = p.tilt * Math.PI / 180, c = Math.cos(r), sn = Math.sin(r), yy = y * p.squash;
+    return { x: p.lean + x * c - yy * sn, y: x * sn + yy * c };
+  }
+  function sweetSpot(p) {
+    const r = (ASSETS.bat.grip.y - ASSETS.bat.tip.y) * ASSETS.bat.scale * ASSETS.bat.sweetSpot;
+    return bodyToFeet(p, p.hx + p.dx * r, p.hy + p.dy * r);
+  }
+
+  const tinted = {};
+  function batImage() {
+    const b = bat();
+    if (b.id === "wood") return img.bat;
+    if (!tinted[b.id]) {
+      const c = document.createElement("canvas"); c.width = img.bat.width; c.height = img.bat.height;
+      const g = c.getContext("2d");
+      g.drawImage(img.bat, 0, 0);
+      g.globalCompositeOperation = "source-atop"; g.globalAlpha = 0.6; g.fillStyle = b.color; g.fillRect(0, 0, c.width, c.height * 0.68);
+      tinted[b.id] = c;
     }
-    ctx.fillStyle = bat().color;
-    ctx.beginPath(); ctx.moveTo(0, -5); ctx.lineTo(Math.max(len - 10, 4), -11); ctx.quadraticCurveTo(len + 2, 0, Math.max(len - 10, 4), 11); ctx.lineTo(0, 5); ctx.closePath(); ctx.fill(); ctx.stroke();
-    ctx.beginPath(); ctx.arc(-4, 0, 6, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+    return tinted[b.id];
+  }
+  function drawBat(p) {
+    const B = ASSETS.bat, proj = Math.hypot(p.dx, p.dy);
+    if (proj < 0.03) return;                       // edge-on for an instant mid-swing
+    ctx.save(); ctx.translate(p.hx, p.hy); ctx.rotate(Math.atan2(p.dy, p.dx) + Math.PI / 2);
+    ctx.scale(B.scale, B.scale * proj);            // shorten as it points toward/away from the camera
+    ctx.drawImage(batImage(), -B.grip.x, -B.grip.y);
     ctx.restore();
-    arm(-24, -188); // back arm (over the bat)
-    ctx.fillStyle = "#fff"; ctx.beginPath(); ctx.arc(hx, hy, 11, 0, Math.PI * 2); ctx.fill(); ctx.stroke(); // batting gloves
-    ctx.fillStyle = "#1f5e45"; ctx.fillRect(hx - 9, hy - 2, 18, 4);
-    // Head + helmet
-    ctx.fillStyle = "#f1c9a0"; ctx.beginPath(); ctx.arc(18, -232, 30, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
-    ctx.fillStyle = INK; ctx.beginPath(); ctx.ellipse(36, -232, 3.5, 6, 0, 0, Math.PI * 2); ctx.fill(); // eye
-    ctx.fillStyle = "#e89a86"; ctx.beginPath(); ctx.arc(30, -218, 5, 0, Math.PI * 2); ctx.fill();
-    ctx.fillStyle = "#1f5e45"; ctx.beginPath(); ctx.arc(12, -240, 36, Math.PI * 0.95, Math.PI * 2.05); ctx.closePath(); ctx.fill(); ctx.stroke();
-    ctx.beginPath(); ctx.moveTo(40, -244); ctx.quadraticCurveTo(66, -244, 70, -234); ctx.lineTo(40, -234); ctx.closePath(); ctx.fill(); ctx.stroke(); // brim
-    ctx.beginPath(); ctx.arc(2, -228, 14, 0, Math.PI * 2); ctx.fill(); ctx.stroke(); // ear flap
-    ctx.fillStyle = INK; ctx.beginPath(); ctx.arc(2, -228, 4, 0, Math.PI * 2); ctx.fill();
-    ctx.fillStyle = "rgba(255,255,255,0.35)"; ctx.beginPath(); ctx.ellipse(0, -262, 14, 6, -0.4, 0, Math.PI * 2); ctx.fill();
+  }
+  function drawArms(p) {
+    const A = ASSETS.arms, Bd = ASSETS.body;
+    const sx = Bd.shoulder.x - Bd.anchor.x, sy = Bd.shoulder.y - Bd.anchor.y;
+    const ang = Math.atan2(p.hy - sy, p.hx - sx), len = Math.hypot(p.hx - sx, p.hy - sy);
+    const ax = A.grip.x - A.pivot.x, ay = A.grip.y - A.pivot.y;
+    const flip = Math.cos(ang) > 0 ? -1 : 1;       // mirror when the hands are out front, so the arms stay upright
+    ctx.save(); ctx.translate(sx, sy); ctx.rotate(ang);
+    ctx.scale(len / Math.hypot(ax, ay), A.thickness * flip);
+    ctx.rotate(-Math.atan2(ay, ax));
+    ctx.drawImage(img.arms, -A.pivot.x, -A.pivot.y);
     ctx.restore();
+  }
+  function drawBatter(now) {
+    const p = batterPose(now), s = L.bodyScale, Bd = ASSETS.body;
+    ctx.save(); ctx.translate(L.bx, L.feetY); ctx.scale(s, s);
+    ctx.fillStyle = "rgba(11,42,29,0.22)"; ctx.beginPath(); ctx.ellipse(20 + p.lean * 0.5, -12, 470, 55, 0, 0, Math.PI * 2); ctx.fill();
+    ctx.translate(p.lean, 0); ctx.rotate(p.tilt * Math.PI / 180); ctx.scale(1, p.squash);
+    const behind = p.dx < 0;                       // bat cocked or wrapped behind the batter
+    if (behind) drawBat(p);
+    ctx.drawImage(img.body, -Bd.anchor.x, -Bd.anchor.y);
+    if (!behind) drawBat(p);
+    drawArms(p);
+    ctx.restore();
+    if (showRig) drawRig(p);
+  }
+
+  // Alignment overlay (#rig or G): anchors, pivots and hit points over the art.
+  function drawRig(p) {
+    const s = L.bodyScale, Bd = ASSETS.body;
+    const toScreen = (x, y) => { const q = bodyToFeet(p, x, y); return { x: L.bx + q.x * s, y: L.feetY + q.y * s }; };
+    const mark = (pt, color, label) => {
+      ctx.fillStyle = color; ctx.strokeStyle = "#fff"; ctx.lineWidth = 2;
+      ctx.beginPath(); ctx.arc(pt.x, pt.y, 5, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+      ctx.font = "bold 11px system-ui, sans-serif"; ctx.textAlign = "left";
+      ctx.lineWidth = 3; ctx.strokeStyle = "#000"; ctx.strokeText(label, pt.x + 8, pt.y + 4); ctx.fillStyle = "#fff"; ctx.fillText(label, pt.x + 8, pt.y + 4);
+    };
+    const shoulder = toScreen(Bd.shoulder.x - Bd.anchor.x, Bd.shoulder.y - Bd.anchor.y);
+    const hands = toScreen(p.hx, p.hy);
+    const sw = sweetSpot(p);
+    ctx.strokeStyle = "rgba(255,255,255,0.8)"; ctx.setLineDash([6, 5]); ctx.lineWidth = 1.5;
+    ctx.beginPath(); ctx.moveTo(0, L.fenceTop); ctx.lineTo(W, L.fenceTop); ctx.moveTo(0, L.fenceBase); ctx.lineTo(W, L.fenceBase); ctx.stroke(); ctx.setLineDash([]);
+    mark({ x: L.bx, y: L.feetY }, "#7a3cff", "body.anchor / batterFeet");
+    mark(shoulder, "#ff8a00", "body.shoulder = arms.pivot");
+    mark(hands, "#00a2ff", "hands = arms.grip = bat.grip");
+    mark({ x: L.bx + sw.x * s, y: L.feetY + sw.y * s }, "#ff2d55", "bat.sweetSpot");
+    mark(L.contact, "#00c853", "contact (ball arrives)");
+    mark(L.mouth, "#00c853", "machine mouth");
+    mark(L.plate, "#7a3cff", "plate");
   }
 
   function drawBall(x, y, r, now) {
@@ -684,6 +593,7 @@
   function swing() {
     if (game.mode !== "play" || game.swingAt || game.phase !== "pitch") return; // taps before the pitch are ignored
     const now = clock();
+    game.swingFrom = restingPose(now);   // swing starts from wherever the load got to
     game.swingAt = now;
     sfx.whoosh();
     const b = bat();
@@ -718,7 +628,7 @@
       game.bestStreak = Math.max(game.bestStreak, game.streak);
       game.cheerUntil = clock() + 1600;
       sfx.cheer(); buzz([30, 40, 30]);
-      if (game.streak >= 3) pop(`${game.streak} IN A ROW!`, "#8fd3a5", 0.5);
+      if (game.streak >= 3) pop(`${game.streak} IN A ROW!`, "#a6dd6e", 0.5);
     } else game.streak = 0;
     updateHud();
     setPhase("after", delay);
@@ -727,7 +637,7 @@
   function resolveHit() {
     const h = game.hit;
     if (h.fair) game.bestHit = Math.max(game.bestHit, h.distance);
-    pop(h.homer ? `HOME RUN! ${h.distance} FT` : h.fair ? `${h.call} ${h.distance} FT` : h.call, h.homer ? "#f2c14e" : CREAM);
+    pop(h.homer ? `HOME RUN! ${h.distance} FT` : h.fair ? `${h.call} ${h.distance} FT` : h.call, h.homer ? "#f6c34f" : CREAM);
     endPitch(h.homer, h.homer ? 650 : 450);
   }
 
@@ -805,7 +715,7 @@
       game.contactDone = true;
       const h = game.hit;
       sfx.crack(h.tier === "perfect" ? 1 : h.tier === "good" ? 0.7 : 0.4);
-      if (h.tier === "perfect") { pop("PERFECT!", "#f2c14e"); game.shake = 12; buzz(45); } else { game.shake = 4; buzz(20); }
+      if (h.tier === "perfect") { pop("PERFECT!", "#f6c34f"); game.shake = 12; buzz(45); } else { game.shake = 4; buzz(20); }
     } else if (game.phase === "hit" && elapsed >= game.phaseLength) {
       resolveHit();
     } else if (game.phase === "after" && elapsed >= game.phaseLength) {
@@ -816,16 +726,15 @@
   function draw(now) {
     ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
     if (game.shake > 0.3) { ctx.translate(rand(-game.shake, game.shake), rand(-game.shake, game.shake)); game.shake *= 0.85; }
-    ctx.drawImage(bgCanvas, 0, 0, W, H);
-    drawStand(-1, now); drawStand(1, now);
+    ctx.fillStyle = SKY; ctx.fillRect(-20, -20, W + 40, L.oy + 22);
+    ctx.fillStyle = DIRT; ctx.fillRect(-20, L.oy + BG.h * L.sc - 2, W + 40, H);
+    ctx.drawImage(img.background, L.ox, L.oy, BG.w * L.sc, BG.h * L.sc);
     drawMachine(now);
     const flying = game.mode === "play" && game.hit && now >= game.hit.start && (game.phase === "hit" || game.phase === "after");
     if (flying) drawFlight(now);
     drawBatter(now);
     if (game.mode === "play" && game.pitch && game.pitch.release && now >= game.pitch.release && (!game.hit || now < game.hit.start)) drawPitch(now);
     drawPops(now);
-    ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
-    ctx.fillStyle = grain; ctx.fillRect(0, 0, W, H);
     updateNeedle(now);
   }
 
@@ -836,8 +745,8 @@
     ctx.strokeStyle = "rgba(255,253,246,0.85)"; ctx.lineWidth = 3 * L.k; ctx.setLineDash([10 * L.k, 9 * L.k]); ctx.lineCap = "round";
     const tail = pitchPos(now - 140);
     ctx.beginPath(); ctx.moveTo(Math.min(tail.x, L.mouth.x), tail.y); ctx.lineTo(b.x + b.r, b.y); ctx.stroke(); ctx.setLineDash([]);
-    ctx.fillStyle = "rgba(34,50,42,0.18)";
-    ctx.beginPath(); ctx.ellipse(b.x, lerp(L.my, L.feetY, clamp(b.p, 0, 1)), b.r * 1.1, b.r * 0.35, 0, 0, Math.PI * 2); ctx.fill();
+    ctx.fillStyle = "rgba(11,42,29,0.18)";
+    ctx.beginPath(); ctx.ellipse(b.x, lerp(L.my, L.groundY, clamp(b.p, 0, 1)), b.r * 1.1, b.r * 0.35, 0, 0, Math.PI * 2); ctx.fill();
     drawBall(b.x, b.y, b.r, now);
   }
 
@@ -849,13 +758,13 @@
     const ft = h.distance * ease + (h.homer && t > 1 ? (t - 1) * 260 : 0);
     const depth = ft / fenceAt(h.spray);
     const persp = (1 - 1 / (1 + 2.2 * depth)) / (1 - 1 / 3.2);    // 0 at the plate, 1 at the fence
-    const target = { x: W * 0.5 + (h.spray / 45) * W * 0.42, y: L.fenceBase };
+    const target = { x: L.fieldX + (h.spray / 45) * L.spread, y: L.fenceBase };
     const gx = lerp(h.from.x, target.x, Math.min(persp, 1.15));
-    const gy = lerp(L.feetY, target.y, Math.min(persp, 1.08));
+    const gy = lerp(L.groundY, target.y, Math.min(persp, 1.08));
     const u = Math.min(t, 1);
     const apexFt = h.angle <= 5 ? 0 : Math.min(h.distance * Math.tan(h.angle * Math.PI / 180) * 0.25, 160);
     const base = (L.land ? 1.9 : 2.4) * L.k;
-    const y = gy - (L.feetY - h.from.y) * (1 - u) - apexFt * base * 0.85 * 4 * u * (1 - u);
+    const y = gy - (L.groundY - h.from.y) * (1 - u) - apexFt * base * 0.85 * 4 * u * (1 - u);
     const r = Math.max(3.5, h.from.r * (1 - 0.72 * Math.pow(Math.min(persp, 1), 1.3)));
     const hidden = (h.homer && depth > 1 && y > L.fenceTop) || (h.homer && t > 1.25);
     return { t, gx, gy, x: gx, y, r, hidden, pastFence: h.homer && depth > 1 };
@@ -873,7 +782,7 @@
       ctx.beginPath(); ctx.arc(g.x, g.y, g.r * (1 - i * 0.12), 0, Math.PI * 2); ctx.fill();
     }
     if (!b.pastFence) {
-      ctx.fillStyle = "rgba(34,50,42,0.22)";
+      ctx.fillStyle = "rgba(11,42,29,0.22)";
       ctx.beginPath(); ctx.ellipse(b.gx, b.gy, b.r * 1.2 + 1, b.r * 0.4 + 1, 0, 0, Math.PI * 2); ctx.fill();
     }
     drawBall(b.x, b.y, b.r, now);
@@ -964,6 +873,7 @@
   window.addEventListener("keydown", e => {
     if (e.code === "Space" && game.mode === "play" && !pausedAt) { e.preventDefault(); swing(); }
     if (e.code === "Escape" || e.code === "KeyP") pausedAt ? resume() : pause();
+    if (e.code === "KeyG") showRig = !showRig;
   });
   $("pause").addEventListener("click", pause);
   $("resume").addEventListener("click", resume);
@@ -972,16 +882,19 @@
   $("again").addEventListener("click", startRound);
   $("to-menu").addEventListener("click", () => { $("summary").hidden = true; $("title").hidden = false; game.mode = "title"; });
   document.addEventListener("visibilitychange", () => { if (document.hidden) pause(); });
-  window.addEventListener("resize", resize);
+  window.addEventListener("resize", () => { if (img.background) resize(); });
 
   // Test hook for automated checks (harmless for players).
   window.__derby = { game, swing, clock };
 
-  resize();
   renderMenu();
   buildMeter();
-  // Redraw the cached scenery once the display font arrives.
-  if (document.fonts && document.fonts.ready) document.fonts.ready.then(buildBackground);
-  requestAnimationFrame(frame);
+  const playBtn = $("play");
+  playBtn.disabled = true; playBtn.textContent = "LOADING…";
+  loadArt().then(() => {
+    resize();
+    playBtn.disabled = false; playBtn.textContent = "PLAY BALL";
+    requestAnimationFrame(frame);
+  }).catch(src => { playBtn.textContent = "ART DIDN'T LOAD"; console.error("Could not load " + src); });
 })();
 </script>
