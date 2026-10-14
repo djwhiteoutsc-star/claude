@@ -241,7 +241,8 @@
 (() => {
   // ================= Tunables =================
   const ROUND_SECONDS = 60;
-  const METER_MS = 450;   // the meter shows ±450 ms around the moment the ball reaches the plate
+  const CONTACT_MS = 70;  // the bat reaches the hitting zone this long after you tap
+  const WINDOWS = { perfect: 55, good: 110, okay: 190 }; // ms either side of the ideal tap
   const BATS = [
     { id: "wood",     name: "Wood",     note: "Classic",            size: 1.0,  power: 1.0,  unlock: 0,  color: "#d9a066" },
     { id: "aluminum", name: "Aluminum", note: "Bigger sweet spot",  size: 1.3,  power: 1.0,  unlock: 10, color: "#c9d2e0" },
@@ -285,7 +286,7 @@
     return {
       land, k, fenceBase, fenceTop: fenceBase - 78 * k, feetY, bx, mx, my, km: k * 0.78,
       plate: { x: bx + 118 * k, y: feetY + 8 * k },
-      contact: { x: bx + 112 * k, y: feetY - 118 * k },
+      contact: { x: bx + 120 * k * 1.05, y: feetY - 150 * k * 1.05 },
       mouth: { x: mx - 58 * k * 0.78, y: my - 112 * k * 0.78 },
     };
   }
@@ -551,20 +552,30 @@
     ctx.restore();
   }
 
+  // The bat is posed in 3D (elevation + azimuth around the hands) and projected,
+  // so it sweeps *around* the body instead of chopping down beside it.
+  const BAT_LEN = 118;
+  const STANCE = { hx: -30, hy: -196, e: 55, a: 180 };
+  const CONTACT = { hx: 28, hy: -160, e: -4, a: 0 };
+  const FINISH = { hx: 36, hy: -198, e: 12, a: -165 };
+  function batPose(now) {
+    let from = STANCE, to = STANCE, u = 0, lean = 0;
+    const t = game.swingAt ? now - game.swingAt : -1;
+    if (t >= 0 && t < CONTACT_MS) { from = STANCE; to = CONTACT; u = Math.pow(t / CONTACT_MS, 1.7); lean = 6 * u; }
+    else if (t >= CONTACT_MS && t < CONTACT_MS + 220) { from = CONTACT; to = FINISH; u = 1 - Math.pow(1 - (t - CONTACT_MS) / 220, 2); lean = 6; }
+    else if (t >= CONTACT_MS + 220 && t < 900) { from = to = FINISH; lean = 6; }
+    else if (t >= 900 && t < 1250) { from = FINISH; to = { ...STANCE, a: -180 }; u = (t - 900) / 350; lean = 6 * (1 - u); }
+    const e = lerp(from.e, to.e, u) + (t < 0 ? Math.sin(now / 260) * 3 : 0);
+    const a = lerp(from.a, to.a, u);
+    const er = e * Math.PI / 180, ar = a * Math.PI / 180;
+    return { hx: lerp(from.hx, to.hx, u), hy: lerp(from.hy, to.hy, u), dx: Math.cos(er) * Math.cos(ar), dy: -Math.sin(er), lean };
+  }
+
   function drawBatter(now) {
     const { bx, feetY, k } = L;
     const s = k * 1.05;
-    // Bat angle: cocked up and back, whips through on a swing, then follows through.
-    let angle = -2.35, lean = 0;
-    if (game.swingAt) {
-      const t = (now - game.swingAt) / 170;
-      if (t < 1) angle = lerp(-2.35, 1.35, 1 - Math.pow(1 - t, 3));
-      else if (t < 4) angle = 1.35 + Math.min(t - 1, 1) * 0.5;
-      else angle = lerp(1.85, -2.35, clamp((t - 4) / 2, 0, 1));
-      lean = t < 4 ? 6 : 0;
-    } else {
-      angle += Math.sin(now / 260) * 0.05;
-    }
+    const pose = batPose(now);
+    const lean = pose.lean;
     ctx.save(); ctx.translate(bx, feetY); ctx.scale(s, s);
     ctx.strokeStyle = INK; ctx.lineWidth = 3; ctx.lineJoin = "round"; ctx.lineCap = "round";
     // Shadow
@@ -586,11 +597,8 @@
     ctx.strokeStyle = "#1f5e45"; ctx.lineWidth = 4; ctx.beginPath(); ctx.moveTo(-2, -198); ctx.lineTo(-2, -122); ctx.stroke(); ctx.strokeStyle = INK; ctx.lineWidth = 3;
     // Little pine tree crest
     ctx.fillStyle = "#1f5e45"; ctx.beginPath(); ctx.moveTo(12, -176); ctx.lineTo(20, -160); ctx.lineTo(4, -160); ctx.closePath(); ctx.fill();
-    // Arms + bat: hands start by the back shoulder, drive through the zone on the swing.
-    const swingT = game.swingAt ? clamp((now - game.swingAt) / 170, 0, 1) : 0;
-    const back = game.swingAt && (now - game.swingAt) > 680 ? clamp(((now - game.swingAt) / 170 - 4) / 2, 0, 1) : 0;
-    const reachT = Math.sin(Math.min(swingT, 1) * Math.PI / 2) * (1 - back);
-    const hx = lerp(-30, 34, reachT), hy = lerp(-196, -158, reachT);
+    // Arms + bat
+    const { hx, hy, dx, dy } = pose;
     const arm = (sx, sy) => {
       ctx.lineCap = "round";
       ctx.strokeStyle = INK; ctx.lineWidth = 22; ctx.beginPath(); ctx.moveTo(sx, sy); ctx.quadraticCurveTo((sx + hx) / 2 + 6, Math.max(sy, hy) + 16, hx, hy); ctx.stroke();
@@ -598,9 +606,15 @@
       ctx.strokeStyle = INK; ctx.lineWidth = 3;
     };
     arm(22, -186); // front arm (behind the bat)
-    ctx.save(); ctx.translate(hx, hy); ctx.rotate(angle);
+    const len = Math.hypot(dx, dy) * BAT_LEN;
+    ctx.save(); ctx.translate(hx, hy); ctx.rotate(Math.atan2(dy, dx));
+    if (game.swingAt && now - game.swingAt > 20 && now - game.swingAt < CONTACT_MS + 40) {
+      // Motion smear across the hitting zone
+      ctx.fillStyle = "rgba(255,253,246,0.45)";
+      ctx.beginPath(); ctx.moveTo(0, 0); ctx.lineTo(len, -6); ctx.lineTo(len * 0.9, 26); ctx.closePath(); ctx.fill();
+    }
     ctx.fillStyle = bat().color;
-    ctx.beginPath(); ctx.moveTo(0, -5); ctx.lineTo(118, -11); ctx.quadraticCurveTo(128, 0, 118, 11); ctx.lineTo(0, 5); ctx.closePath(); ctx.fill(); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(0, -5); ctx.lineTo(Math.max(len - 10, 4), -11); ctx.quadraticCurveTo(len + 2, 0, Math.max(len - 10, 4), 11); ctx.lineTo(0, 5); ctx.closePath(); ctx.fill(); ctx.stroke();
     ctx.beginPath(); ctx.arc(-4, 0, 6, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
     ctx.restore();
     arm(-24, -188); // back arm (over the bat)
@@ -651,10 +665,10 @@
 
   function queuePitch(delay) {
     // The machine gets quicker as the home runs pile up.
-    const travel = Math.max(560, 980 - game.hrs * 22) * rand(0.88, 1.12);
+    const travel = Math.max(640, 1050 - game.hrs * 20) * rand(0.9, 1.1);
     game.pitch = { travel, release: 0, arrival: 0, drop: rand(-12, 18) };
-    game.hit = null; game.swingAt = 0; game.meterLock = null;
-    setPhase("wait", delay + rand(500, 1300));
+    game.hit = null; game.swingAt = 0; game.meterLock = null; game.whiff = false; game.contactDone = false;
+    setPhase("wait", delay + rand(350, 850));
   }
 
   function pitchPos(now) {
@@ -662,36 +676,39 @@
     const a = L.mouth, b = L.contact;
     const x = lerp(a.x, b.x, p);
     const y = lerp(a.y, b.y + game.pitch.drop * L.k, p) - Math.sin(clamp(p, 0, 1) * Math.PI) * 26 * L.k;
-    return { p, x, y, r: lerp(6, 11, clamp(p, 0, 1.2)) * L.k * 1.1 };
+    const q = clamp(p, 0, 1.2);
+    return { p, x, y, r: Math.max(lerp(5, 9, q), lerp(7, 13, q) * L.k * 1.1) };
   }
 
   // ================= Swinging =================
   function swing() {
-    if (game.mode !== "play" || game.swingAt) return;
-    if (game.phase !== "pitch" && game.phase !== "wait") return;
+    if (game.mode !== "play" || game.swingAt || game.phase !== "pitch") return; // taps before the pitch are ignored
     const now = clock();
     game.swingAt = now;
     sfx.whoosh();
-    if (game.phase === "wait") { pop("TOO EARLY", RED); return endPitch(false, 700); }
     const b = bat();
-    const d = now - game.pitch.arrival; // ms, negative = early
-    const perfect = 40 * b.size, good = 90 * b.size, okay = 170 * b.size;
+    const d = now + CONTACT_MS - game.pitch.arrival; // ms vs. the ideal tap; negative = early
+    const perfect = WINDOWS.perfect * b.size, good = WINDOWS.good * b.size, okay = WINDOWS.okay * b.size;
     game.meterLock = d;
-    if (Math.abs(d) > okay) { pop(d < 0 ? "TOO EARLY" : "TOO LATE", RED); return endPitch(false, 800); }
+    if (Math.abs(d) > okay) { pop(d < 0 ? "TOO EARLY" : "TOO LATE", RED); game.whiff = true; return; }
 
+    // Outcome follows timing: dead-on is a no-doubter, early rolls over and pulls, late pops up and slices.
     const tier = Math.abs(d) <= perfect ? "perfect" : Math.abs(d) <= good ? "good" : "okay";
-    const exitVelo = (tier === "perfect" ? rand(110, 118) : tier === "good" ? rand(92, 105) : rand(72, 92)) * b.power;
-    const angle = tier === "perfect" ? rand(26, 32) : tier === "good" ? rand(16, 40) : rand(-5, 58);
-    const spray = clamp(d / okay * 52 + rand(-6, 6), -70, 70);
+    const q = 1 - Math.abs(d) / okay, side = d / okay;
+    const exitVelo = (tier === "perfect" ? rand(110, 116) : tier === "good" ? 96 + 12 * q + rand(-2, 2) : 76 + 16 * q + rand(-2, 2)) * b.power;
+    const angle = tier === "perfect" ? rand(27, 31) : 28 + side * (tier === "good" ? 26 : 44) + rand(-2, 2);
+    const spray = clamp(side * 56 + rand(-4, 4), -70, 70);
     const rad = angle * Math.PI / 180;
-    const distance = Math.round(angle <= 5 ? exitVelo * 1.1 : exitVelo * 4.3 * Math.pow(Math.max(Math.sin(2 * rad), 0.05), 0.75));
+    let distance = Math.round(angle <= 5 ? exitVelo * 1.1 : exitVelo * 4.3 * Math.pow(Math.max(Math.sin(2 * rad), 0.05), 0.75));
     const fair = Math.abs(spray) <= 45;
+    if (tier === "perfect" && fair) distance = Math.max(distance, Math.round(fenceAt(spray) + rand(15, 60)));
     const homer = fair && distance >= fenceAt(spray);
     const call = !fair ? "FOUL BALL" : homer ? "HOME RUN!" : angle < 10 ? "GROUNDER" : angle > 50 ? "POP UP" : "CAUGHT!";
-    game.hit = { exitVelo, angle, spray, distance, fair, homer, call, start: now, tier };
-    sfx.crack(tier === "perfect" ? 1 : tier === "good" ? 0.7 : 0.4);
-    if (tier === "perfect") { pop("PERFECT!", "#f2c14e"); game.shake = 12; buzz(45); } else buzz(20);
-    setPhase("hit", 900 + Math.min(distance, 460) * 2.4);
+    const start = now + CONTACT_MS;
+    const from = pitchPos(start);
+    const flight = 900 + Math.min(distance, 470) * 1.1;
+    game.hit = { exitVelo, angle, spray, distance, fair, homer, call, tier, start, flight, from: { x: from.x, y: from.y, r: from.r } };
+    setPhase("hit", CONTACT_MS + 60 + flight);
   }
   const fenceAt = spray => 330 + 60 * Math.cos(spray * 2 * Math.PI / 180);
 
@@ -710,8 +727,8 @@
   function resolveHit() {
     const h = game.hit;
     if (h.fair) game.bestHit = Math.max(game.bestHit, h.distance);
-    pop(h.homer ? "HOME RUN!" : h.fair ? `${h.call} ${h.distance} FT` : h.call, h.homer ? "#f2c14e" : CREAM);
-    endPitch(h.homer, 700);
+    pop(h.homer ? `HOME RUN! ${h.distance} FT` : h.fair ? `${h.call} ${h.distance} FT` : h.call, h.homer ? "#f2c14e" : CREAM);
+    endPitch(h.homer, h.homer ? 650 : 450);
   }
 
   function endRound() {
@@ -745,19 +762,21 @@
   }
   const arcPoint = (deg, r = 92) => [120 + r * Math.sin(deg * Math.PI / 180), 110 - r * Math.cos(deg * Math.PI / 180)];
   const arcPath = (a, b) => { const [x1, y1] = arcPoint(a), [x2, y2] = arcPoint(b); return `M${x1} ${y1} A92 92 0 0 1 ${x2} ${y2}`; };
+  // The needle travels with the ball: far left at release, dead centre at the ideal tap.
+  function meterRange() { return game.pitch && game.pitch.travel ? game.pitch.travel - CONTACT_MS : 900; }
   function buildMeter() {
-    const b = bat(), span = 72;
-    const g = 90 * b.size / METER_MS * span, p = 40 * b.size / METER_MS * span;
+    const b = bat(), span = 72, range = meterRange();
+    const g = Math.min(WINDOWS.good * b.size / range, 0.9) * span, p = Math.min(WINDOWS.perfect * b.size / range, 0.9) * span;
     $("arc-bg").setAttribute("d", arcPath(-span - 2, span + 2));
     $("arc-early").setAttribute("d", arcPath(-span, span));
     $("arc-good").setAttribute("d", arcPath(-g, g));
     $("arc-perfect").setAttribute("d", arcPath(-p, p));
   }
   function updateNeedle(now) {
-    let d = -METER_MS;
-    if (game.mode === "play" && game.phase === "pitch") d = now - game.pitch.arrival;
+    let d = -Infinity;
+    if (game.mode === "play" && game.phase === "pitch" && now >= game.pitch.release) d = now + CONTACT_MS - game.pitch.arrival;
     if (game.swingAt && game.meterLock !== null) d = game.meterLock;
-    const deg = clamp(d / METER_MS, -1, 1) * 72;
+    const deg = clamp(d / meterRange(), -1, 1) * 72;
     $("needle").setAttribute("transform", `rotate(${deg} 120 110)`);
   }
 
@@ -775,10 +794,18 @@
       game.launchAt = now; game.meterLock = null;
       game.pitch.release = now + 120; game.pitch.arrival = game.pitch.release + game.pitch.travel;
       sfx.thunk();
+      buildMeter();
       setPhase("pitch", game.pitch.travel + 400);
-    } else if (game.phase === "pitch" && !game.swingAt && now > game.pitch.arrival + 260) {
-      pop("STRIKE!", RED); sfx.mitt();
-      endPitch(false, 500);
+    } else if (game.phase === "pitch" && (!game.swingAt || game.whiff) && now > game.pitch.arrival + 260) {
+      if (!game.whiff) pop("STRIKE!", RED);
+      sfx.mitt();
+      endPitch(false, 450);
+    } else if (game.phase === "hit" && !game.contactDone && now >= game.hit.start) {
+      // The crack lands when the bat actually meets the ball.
+      game.contactDone = true;
+      const h = game.hit;
+      sfx.crack(h.tier === "perfect" ? 1 : h.tier === "good" ? 0.7 : 0.4);
+      if (h.tier === "perfect") { pop("PERFECT!", "#f2c14e"); game.shake = 12; buzz(45); } else { game.shake = 4; buzz(20); }
     } else if (game.phase === "hit" && elapsed >= game.phaseLength) {
       resolveHit();
     } else if (game.phase === "after" && elapsed >= game.phaseLength) {
@@ -792,10 +819,10 @@
     ctx.drawImage(bgCanvas, 0, 0, W, H);
     drawStand(-1, now); drawStand(1, now);
     drawMachine(now);
-    const flying = game.mode === "play" && game.hit && (game.phase === "hit" || game.phase === "after");
+    const flying = game.mode === "play" && game.hit && now >= game.hit.start && (game.phase === "hit" || game.phase === "after");
     if (flying) drawFlight(now);
     drawBatter(now);
-    if (game.mode === "play" && game.pitch && game.pitch.release && !game.hit && now >= game.pitch.release) drawPitch(now);
+    if (game.mode === "play" && game.pitch && game.pitch.release && now >= game.pitch.release && (!game.hit || now < game.hit.start)) drawPitch(now);
     drawPops(now);
     ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
     ctx.fillStyle = grain; ctx.fillRect(0, 0, W, H);
@@ -814,32 +841,42 @@
     drawBall(b.x, b.y, b.r, now);
   }
 
-  // Batted ball flies "into" the picture: rising, shrinking, drifting by spray angle toward the fence.
+  // Batted ball rockets off the bat, eases out, and shrinks into the picture toward the fence.
+  // Height follows time, so the ball climbs into the sky and comes down as it reaches its distance.
+  function flightPos(h, now) {
+    const t = clamp((now - h.start - 50) / h.flight, 0, 1.3);   // 50 ms hit-stop on contact
+    const ease = 1 - Math.pow(1 - Math.min(t, 1), 2.4);
+    const ft = h.distance * ease + (h.homer && t > 1 ? (t - 1) * 260 : 0);
+    const depth = ft / fenceAt(h.spray);
+    const persp = (1 - 1 / (1 + 2.2 * depth)) / (1 - 1 / 3.2);    // 0 at the plate, 1 at the fence
+    const target = { x: W * 0.5 + (h.spray / 45) * W * 0.42, y: L.fenceBase };
+    const gx = lerp(h.from.x, target.x, Math.min(persp, 1.15));
+    const gy = lerp(L.feetY, target.y, Math.min(persp, 1.08));
+    const u = Math.min(t, 1);
+    const apexFt = h.angle <= 5 ? 0 : Math.min(h.distance * Math.tan(h.angle * Math.PI / 180) * 0.25, 160);
+    const base = (L.land ? 1.9 : 2.4) * L.k;
+    const y = gy - (L.feetY - h.from.y) * (1 - u) - apexFt * base * 0.85 * 4 * u * (1 - u);
+    const r = Math.max(3.5, h.from.r * (1 - 0.72 * Math.pow(Math.min(persp, 1), 1.3)));
+    const hidden = (h.homer && depth > 1 && y > L.fenceTop) || (h.homer && t > 1.25);
+    return { t, gx, gy, x: gx, y, r, hidden, pastFence: h.homer && depth > 1 };
+  }
+
   function drawFlight(now) {
     const h = game.hit;
-    const dur = game.phaseLength - 250;
-    const t = clamp((now - h.start) / dur, 0, 1.25);
-    const ft = h.distance * Math.min(t, 1) + (h.homer ? (t - 1) * 120 * (t > 1) : 0);
-    const fence = fenceAt(h.spray);
-    const depth = ft / fence;                                 // 1.0 = at the fence
-    const persp = 1 / (1 + depth * 2.6);                      // shrink with distance
-    const groundY = lerp(L.contact.y + 90 * L.k, L.fenceBase - 6 * L.k, 1 - persp) ;
-    const sideX = lerp(L.contact.x, W * 0.5 + (h.spray / 45) * W * 0.42, Math.min(1, depth * 0.9));
-    const f = clamp(ft / h.distance, 0, 1);
-    const apex = h.angle <= 5 ? 0 : Math.min(h.distance * Math.tan(h.angle * Math.PI / 180) * 0.22, 150);
-    const heightFt = h.homer && t > 1 ? apex * 0.3 : 4 * apex * f * (1 - f) + 3 * (1 - f);
-    const y = groundY - heightFt * 2.4 * L.k * persp * (L.land ? 1 : 1.3) - (1 - Math.min(t * 6, 1)) * 30 * L.k;
-    if (t > 1.2 && h.homer) return;
-    ctx.fillStyle = "rgba(34,50,42,0.22)";
-    ctx.beginPath(); ctx.ellipse(sideX, groundY, 9 * L.k * persp + 2, 3 * L.k * persp + 1, 0, 0, Math.PI * 2); ctx.fill();
-    drawBall(sideX, y, Math.max(3, 12 * L.k * persp), now);
-    // Live distance tag
-    if (h.fair) {
-      ctx.font = `${Math.round(30 * Math.max(L.k, 0.6))}px ${FONT}`; ctx.textAlign = "center";
-      ctx.lineWidth = 6; ctx.strokeStyle = INK; ctx.lineJoin = "round";
-      const label = `${Math.round(Math.min(ft, h.distance))} FT`;
-      ctx.strokeText(label, sideX, y - 26 * Math.max(L.k, 0.6)); ctx.fillStyle = CREAM; ctx.fillText(label, sideX, y - 26 * Math.max(L.k, 0.6));
+    const b = flightPos(h, now);
+    if (b.hidden) return;
+    // Fading trail so the ball is easy to follow
+    for (let i = 4; i >= 1; i--) {
+      const g = flightPos(h, now - i * 28);
+      if (g.hidden || g.t <= 0) continue;
+      ctx.fillStyle = `rgba(255,253,246,${0.5 - i * 0.1})`;
+      ctx.beginPath(); ctx.arc(g.x, g.y, g.r * (1 - i * 0.12), 0, Math.PI * 2); ctx.fill();
     }
+    if (!b.pastFence) {
+      ctx.fillStyle = "rgba(34,50,42,0.22)";
+      ctx.beginPath(); ctx.ellipse(b.gx, b.gy, b.r * 1.2 + 1, b.r * 0.4 + 1, 0, 0, Math.PI * 2); ctx.fill();
+    }
+    drawBall(b.x, b.y, b.r, now);
   }
 
   function drawPops(now) {
