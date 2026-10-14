@@ -290,15 +290,27 @@
     body: {
       src: "assets/batter-body.webp",
       anchor: { x: 640, y: 1247 },     // on the ground between the feet; the whole batter is placed by this
-      shoulder: { x: 805, y: 452 },    // front shoulder socket: the arms pivot here
+      backShoulder: { x: 412, y: 440 },  // shoulder sockets: each arm pivots at its own
+      frontShoulder: { x: 805, y: 452 },
       height: 1200,                    // sprite height used for scaling
       heightOnBackground: 500,         // how tall the batter stands, in background pixels
     },
     arms: {
+      // One image with both arms. It's cut into four pieces at load time: each arm is split from the
+      // other along `separator`, then at the cuff into a sleeve (upper arm) and a forearm with the fist.
+      // Each arm bends at its elbow (two-bone IK) to put its fist on the bat.
       src: "assets/batter-arms.webp",
-      pivot: { x: 1175, y: 525 },      // centre of the shoulder sleeve (sits on body.shoulder)
-      grip: { x: 330, y: 430 },        // where the bat handle passes through the fists
-      thickness: 0.32,                 // width relative to the body; length stretches to reach the hands
+      scale: 0.45,                     // relative to the body
+      separator: [[0, 390], [230, 397], [300, 410], [360, 430], [400, 462], [430, 486], [470, 507], [510, 523], [550, 543],
+                  [590, 561], [630, 579], [670, 594], [710, 606], [750, 616], [790, 621], [830, 612], [870, 600], [910, 584],
+                  [950, 568], [990, 548], [1012, 537], [1035, 524], [1055, 511], [1072, 497], [1086, 482], [1097, 466],
+                  [1104, 440], [1107, 400], [1110, 300], [1112, 0]],   // follows the upper sleeve's outline where the sleeves touch
+      // back arm: the larger, near-camera arm (lower in the image). It crosses in front of the chest and is drawn on top.
+      back:  { part: "lower", shoulder: { x: 1170, y: 640 }, elbow: { x: 1000, y: 705 }, cut: { x: 905, y: 690 }, fist: { x: 328, y: 552 } },
+      // front arm: the smaller arm (upper in the image), drawn underneath.
+      front: { part: "upper", shoulder: { x: 1005, y: 425 }, elbow: { x: 865, y: 470 }, cut: { x: 805, y: 455 }, fist: { x: 362, y: 332 } },
+      elbowRadius: 58,                 // rounded end of the forearm, hidden under the sleeve so bends never show a seam
+      handSpacing: 70,                 // distance between the two fists along the handle (body px)
     },
     bat: {
       src: "assets/bat.webp",
@@ -315,10 +327,10 @@
   //           90 = toward the camera), so the bat sweeps around the body and foreshortens
   //   lean    body shift toward the pitcher, tilt = body rotation (degrees), squash = body height scale
   const POSES = {
-    stance:  { hx: -190, hy: -830, e: 55, a: 180, lean: 0,   tilt: 0,    squash: 1 },
-    load:    { hx: -250, hy: -850, e: 66, a: 196, lean: -18, tilt: -2.5, squash: 0.985 }, // anticipation
-    contact: { hx: 330,  hy: -620, e: -4, a: 0,   lean: 22,  tilt: 3,    squash: 1 },
-    finish:  { hx: 360,  hy: -870, e: 45, a: -150, lean: 26, tilt: 4,    squash: 1.012 },
+    stance:  { hx: -100, hy: -910, e: 55, a: 180, lean: 0,   tilt: 0,    squash: 1 },
+    load:    { hx: -150, hy: -925, e: 66, a: 196, lean: -18, tilt: -2.5, squash: 0.985 }, // anticipation
+    contact: { hx: 150,  hy: -650, e: -4, a: 0,   lean: 22,  tilt: 3,    squash: 1 },
+    finish:  { hx: 130,  hy: -930, e: 45, a: -150, lean: 26, tilt: 4,    squash: 1.012 },
   };
   // Swing timing in ms. The swing itself is CONTACT_MS (tap → bat on ball).
   const MOTION = {
@@ -491,17 +503,85 @@
     ctx.drawImage(batImage(), -B.grip.x, -B.grip.y);
     ctx.restore();
   }
-  function drawArms(p) {
-    const A = ASSETS.arms, Bd = ASSETS.body;
-    const sx = Bd.shoulder.x - Bd.anchor.x, sy = Bd.shoulder.y - Bd.anchor.y;
-    const ang = Math.atan2(p.hy - sy, p.hx - sx), len = Math.hypot(p.hx - sx, p.hy - sy);
-    const ax = A.grip.x - A.pivot.x, ay = A.grip.y - A.pivot.y;
-    const flip = Math.cos(ang) > 0 ? -1 : 1;       // mirror when the hands are out front, so the arms stay upright
-    ctx.save(); ctx.translate(sx, sy); ctx.rotate(ang);
-    ctx.scale(len / Math.hypot(ax, ay), A.thickness * flip);
-    ctx.rotate(-Math.atan2(ay, ax));
-    ctx.drawImage(img.arms, -A.pivot.x, -A.pivot.y);
+  // Cut the arms image into four pieces (see ASSETS.arms).
+  const armPieces = {};
+  function buildArmPieces() {
+    const A = ASSETS.arms, im = img.arms, w = im.width, h = im.height;
+    const sep = A.separator;
+    const regions = {
+      upper: [[0, 0], ...sep.slice().reverse()],           // above the separator
+      lower: [...sep, [w, 0], [w, h], [0, h]],             // below it
+    };
+    for (const side of ["back", "front"]) {
+      const a = A[side];
+      const ux = a.fist.x - a.elbow.x, uy = a.fist.y - a.elbow.y, ul = Math.hypot(ux, uy);
+      const u = { x: ux / ul, y: uy / ul }, big = w + h;
+      // Half-plane through the cut, perpendicular to the forearm. offset > 0 moves it toward the fist.
+      const half = (towardFist, offset) => {
+        const cx = a.cut.x + u.x * offset, cy = a.cut.y + u.y * offset, nx = -u.y, ny = u.x, d = towardFist ? 1 : -1;
+        return [[cx + nx * big, cy + ny * big], [cx - nx * big, cy - ny * big],
+                [cx - nx * big + u.x * big * d, cy - ny * big + u.y * big * d], [cx + nx * big + u.x * big * d, cy + ny * big + u.y * big * d]];
+      };
+      const path = (g, poly) => { g.beginPath(); poly.forEach(([x, y], i) => i ? g.lineTo(x, y) : g.moveTo(x, y)); g.closePath(); };
+      // Each entry in `shapes` is drawn as its own clipped pass, so the piece is their union.
+      const piece = shapes => {
+        const c = document.createElement("canvas"); c.width = w; c.height = h;
+        const g = c.getContext("2d");
+        for (const shape of shapes) {
+          g.save(); path(g, regions[a.part]); g.clip();
+          if (Array.isArray(shape)) path(g, shape); else { g.beginPath(); g.arc(shape.x, shape.y, shape.r, 0, Math.PI * 2); }
+          g.clip(); g.drawImage(im, 0, 0); g.restore();
+        }
+        return c;
+      };
+      armPieces[side] = {
+        sleeve: piece([half(false, 0)]),
+        fore: piece([half(true, 0), { x: a.elbow.x, y: a.elbow.y, r: A.elbowRadius }]),
+      };
+    }
+  }
+
+  // Two-bone IK: from the shoulder S, find the elbow E so the fist lands on T. Elbows bend downward.
+  // If the fist is out of reach the forearm stretches; if it's too close the forearm foreshortens.
+  function solveArm(S, T, L1, L2) {
+    const dx = T.x - S.x, dy = T.y - S.y, d = Math.max(Math.hypot(dx, dy), 1e-3);
+    let l2 = L2;
+    if (d > L1 + L2) l2 = d - L1 + 1e-3;
+    else if (d < Math.abs(L2 - L1)) l2 = Math.hypot(d, L1);
+    const cosA = clamp((L1 * L1 + d * d - l2 * l2) / (2 * L1 * d), -1, 1), A = Math.acos(cosA), base = Math.atan2(dy, dx);
+    const e1 = { x: S.x + Math.cos(base + A) * L1, y: S.y + Math.sin(base + A) * L1 };
+    const e2 = { x: S.x + Math.cos(base - A) * L1, y: S.y + Math.sin(base - A) * L1 };
+    return { E: e1.y >= e2.y ? e1 : e2, l2 };
+  }
+  // Draw an image so that its segment (a→b, in image px) lands on (A→B), with a given thickness scale.
+  function drawSegment(image, a, b, A, B, thick) {
+    const sa = Math.atan2(b.y - a.y, b.x - a.x), ta = Math.atan2(B.y - A.y, B.x - A.x);
+    ctx.save(); ctx.translate(A.x, A.y); ctx.rotate(ta);
+    ctx.scale(Math.hypot(B.x - A.x, B.y - A.y) / Math.hypot(b.x - a.x, b.y - a.y), thick);
+    ctx.rotate(-sa);
+    ctx.drawImage(image, -a.x, -a.y);
     ctx.restore();
+  }
+  function armTargets(p) {
+    const half = ASSETS.arms.handSpacing / 2;
+    // Top hand (back arm) sits toward the barrel, bottom hand (front arm) toward the knob.
+    return { back: { x: p.hx + p.dx * half, y: p.hy + p.dy * half }, front: { x: p.hx - p.dx * half, y: p.hy - p.dy * half } };
+  }
+  function armJoints(p, side) {
+    const A = ASSETS.arms, a = A[side], Bd = ASSETS.body;
+    const sock = side === "back" ? Bd.backShoulder : Bd.frontShoulder;
+    const S = { x: sock.x - Bd.anchor.x, y: sock.y - Bd.anchor.y }, T = armTargets(p)[side];
+    const L1 = Math.hypot(a.elbow.x - a.shoulder.x, a.elbow.y - a.shoulder.y) * A.scale;
+    const L2 = Math.hypot(a.fist.x - a.elbow.x, a.fist.y - a.elbow.y) * A.scale;
+    const { E } = solveArm(S, T, L1, L2);
+    return { S, E, T };
+  }
+  function drawArm(p, side) {
+    const A = ASSETS.arms, a = A[side], { S, E, T } = armJoints(p, side);
+    // The art points left; mirror it when the arm reaches to the right so it never draws upside down.
+    const thick = A.scale * (T.x > S.x ? -1 : 1);
+    drawSegment(armPieces[side].fore, a.elbow, a.fist, E, T, thick);    // forearm first, tucked under
+    drawSegment(armPieces[side].sleeve, a.shoulder, a.elbow, S, E, thick);
   }
   function drawBatter(now) {
     const p = batterPose(now), s = L.bodyScale, Bd = ASSETS.body;
@@ -511,8 +591,9 @@
     const behind = p.dx < 0;                       // bat cocked or wrapped behind the batter
     if (behind) drawBat(p);
     ctx.drawImage(img.body, -Bd.anchor.x, -Bd.anchor.y);
-    if (!behind) drawBat(p);
-    drawArms(p);
+    if (!behind) drawBat(p);                       // the grip always sits behind the fists
+    drawArm(p, "front");
+    drawArm(p, "back");
     ctx.restore();
     if (showRig) drawRig(p);
   }
@@ -527,14 +608,18 @@
       ctx.font = "bold 11px system-ui, sans-serif"; ctx.textAlign = "left";
       ctx.lineWidth = 3; ctx.strokeStyle = "#000"; ctx.strokeText(label, pt.x + 8, pt.y + 4); ctx.fillStyle = "#fff"; ctx.fillText(label, pt.x + 8, pt.y + 4);
     };
-    const shoulder = toScreen(Bd.shoulder.x - Bd.anchor.x, Bd.shoulder.y - Bd.anchor.y);
+    for (const side of ["back", "front"]) {
+      const j = armJoints(p, side), S = toScreen(j.S.x, j.S.y), E = toScreen(j.E.x, j.E.y), T = toScreen(j.T.x, j.T.y);
+      ctx.strokeStyle = side === "back" ? "#ff8a00" : "#ffd400"; ctx.lineWidth = 3;
+      ctx.beginPath(); ctx.moveTo(S.x, S.y); ctx.lineTo(E.x, E.y); ctx.lineTo(T.x, T.y); ctx.stroke();
+      mark(S, "#ff8a00", `body.${side}Shoulder`); mark(E, "#ffd400", `${side} elbow`); mark(T, "#00a2ff", `${side} fist`);
+    }
     const hands = toScreen(p.hx, p.hy);
     const sw = sweetSpot(p);
     ctx.strokeStyle = "rgba(255,255,255,0.8)"; ctx.setLineDash([6, 5]); ctx.lineWidth = 1.5;
     ctx.beginPath(); ctx.moveTo(0, L.fenceTop); ctx.lineTo(W, L.fenceTop); ctx.moveTo(0, L.fenceBase); ctx.lineTo(W, L.fenceBase); ctx.stroke(); ctx.setLineDash([]);
     mark({ x: L.bx, y: L.feetY }, "#7a3cff", "body.anchor / batterFeet");
-    mark(shoulder, "#ff8a00", "body.shoulder = arms.pivot");
-    mark(hands, "#00a2ff", "hands = arms.grip = bat.grip");
+    mark(hands, "#00a2ff", "bat.grip");
     mark({ x: L.bx + sw.x * s, y: L.feetY + sw.y * s }, "#ff2d55", "bat.sweetSpot");
     mark(L.contact, "#00c853", "contact (ball arrives)");
     mark(L.mouth, "#00c853", "machine mouth");
@@ -892,6 +977,7 @@
   const playBtn = $("play");
   playBtn.disabled = true; playBtn.textContent = "LOADING…";
   loadArt().then(() => {
+    buildArmPieces();
     resize();
     playBtn.disabled = false; playBtn.textContent = "PLAY BALL";
     requestAnimationFrame(frame);

@@ -20,13 +20,17 @@ A batting-only baseball prototype: step 1 toward a fuller baseball game. It's on
 |---|---|
 | `assets/sandlot.webp` | Background |
 | `assets/batter-body.webp` | Batter without arms |
-| `assets/batter-arms.webp` | Both arms, gloved fists together |
+| `assets/batter-arms.webp` | Both arms, separated, gloved fists together |
 | `assets/bat.webp` | Bat, barrel up |
 
 The batter is built from three layers, bottom to top:
 1. **Body**
 2. **Bat**: its grip sits behind the fists
-3. **Arms**: they pivot at the front shoulder and stretch to reach the hands each frame
+3. **Arms**: one per shoulder.
+   - At load time the arms image is cut into four pieces: the two arms are split along `ASSETS.arms.separator`, then each is split at the cuff into a sleeve and a forearm.
+   - Each frame, each arm bends at its elbow to put its fist on the bat (two-bone IK). Elbows bend downward.
+   - The forearm's rounded end tucks under the sleeve.
+   - The top hand belongs to the back arm, the bottom hand to the front arm.
 
 The bat is posed in 3D (elevation and direction) and drawn foreshortened, so it sweeps around the body. When it points backward it's drawn behind the body.
 
@@ -40,8 +44,9 @@ The motion runs in this order:
 Everything you'd want to adjust is in one place near the top of the script:
 - **`ASSETS`**: each image's anchor and pivot points in its own pixels, plus the scales:
   - where the batter stands on the background
-  - body height, the shoulder socket and arms pivot
-  - fist grip, bat grip, tip and sweet spot
+  - body height and both shoulder sockets
+  - each arm's shoulder, elbow, cuff cut and fist, plus the arm separator line
+  - bat grip, tip and sweet spot
   - fence line and machine spot
 - **`POSES`**: keyframes for stance, load, contact and finish.
   - `hx, hy` is the hands position in body pixels from the feet.
